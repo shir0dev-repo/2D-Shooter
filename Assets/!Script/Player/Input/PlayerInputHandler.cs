@@ -8,6 +8,7 @@ public class PlayerInputHandler : MonoBehaviour
     private const string _JUMP_ACTION_NAME = "Jump";
 
     [SerializeField] private float _playerSpeed = 8f;
+    [SerializeField] private float jumpHeight = 0.5f; //////////////NEW
 
     private PlayerInputActionsAsset _playerActionsAsset;
     private InputAction _moveAction;
@@ -47,6 +48,7 @@ public class PlayerInputHandler : MonoBehaviour
     {
         //Check if player is pressed WASD.
         Vector2 inputMoveVector = _moveAction.ReadValue<Vector2>().normalized;
+        //Vector2 inputJumpVector = _jumpAction.ReadValue<Vector2>().normalized; /////////////////////////NEW- Didn't work
 
         //Magnitude in this case really only means if the player is pressing WASD. magnitude == 0 if WASD is NOT pressed.
         //Square roots are slow in computing, so grabbing the SQUARED magnitude is a slight optimization.
@@ -54,6 +56,11 @@ public class PlayerInputHandler : MonoBehaviour
         {
             Vector3 moveDirection = new Vector3(inputMoveVector.x, inputMoveVector.y);
             transform.position += moveDirection * Time.deltaTime * _playerSpeed;
+        }
+        bool isSpacePressed = _jumpAction.triggered;//////////////////////////////NEW
+        if (isSpacePressed == true)//////////////////////////////NEW
+        {
+            transform.position += new Vector3(0, jumpHeight, 0); //x= 0, y= jumpHeight, z=0 ////////////////NEW
         }
 
         /*
