@@ -1,0 +1,26 @@
+STEPS TO CREATING INPUT ACTIONS
+
+- Install InputSystem Package
+	- Window>Package Manager> Packages: Unity Registry
+	- Search for Input System
+	-Install and Restart Editor (when prompted)
+
+- Create Action Asset (blue lightning bolt trifold map)
+	- Right click, Create>Input Actions
+
+ONCE CREATED, DOUBLE CLICK TO OPEN
+
+- Create Action Map (kinda like a control scheme)
+	- Plus sign next to "Action Maps" tab
+
+- Create Individual Actions (NAMES ARE IMPORTANT)
+	- Plus sign next to "Actions" tab
+		ACTION TYPE: Button, Value, Pass-through. 
+		- Button for single time stuff (jump, attack, roll, etc.)
+		- Value for movement (WASD) (UP/DOWN/LEFT/RIGHT Composite)
+
+ACCESSING THROUGH SCRIPT
+
+TO USE ACTIONS IN SCRIPT, GO TO INSPECTOR AND TOGGLE "Generate C# Class" and apply.
+
+Add script to gameobject and be so happy your character is moving!!!!! yay :3
