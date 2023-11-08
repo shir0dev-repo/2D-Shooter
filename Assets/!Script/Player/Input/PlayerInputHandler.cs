@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 
 [RequireComponent(typeof(Rigidbody2D))] //OPTIONAL: When Script Requires Component, will automatically add said component when adding this script.
@@ -11,6 +12,9 @@ public class PlayerInputHandler : MonoBehaviour
     [SerializeField] private float _playerMoveSpeed = 8f, _playerMaxMoveSpeed = 13f;
     [SerializeField] private float _jumpForce = 0.5f;
     [SerializeField] private Rigidbody2D _rigidbody;
+
+    bool grounded;
+    private float deceleration = 20f;
 
     private PlayerInputActionsAsset _playerActionsAsset;
     private InputAction _moveAction;
@@ -44,10 +48,26 @@ public class PlayerInputHandler : MonoBehaviour
         //NOT in Update();
         //Adding to transform.position.y;
     }
-
+    private void OnCollisionEnter2D(Collision2D other) //Collider ground check by comparing tags
+    {
+        if (other.gameObject.CompareTag("Ground"))
+        {
+            grounded = true;
+        }
+    }
+    private void OnCollisionExit2D(Collision2D other)
+    {
+        if (other.gameObject.CompareTag("Ground"))
+        {
+            grounded = false;
+        }
+    }
     private void HandleJump(InputAction.CallbackContext context)
     {
-        _rigidbody.AddForce(new Vector2(0, _jumpForce), ForceMode2D.Impulse);
+        if (grounded == true)
+        {
+            _rigidbody.AddForce(new Vector2(0, _jumpForce), ForceMode2D.Impulse);
+        }
     }
 
     private void OnDisable()
@@ -76,6 +96,8 @@ public class PlayerInputHandler : MonoBehaviour
 
         if (inputDirection != 0)
         {
+            _rigidbody.drag = 0;
+
             Vector3 rigidbodyHorizontalVelocity = _rigidbody.velocity;
 
             float rigidbodyVerticalVelocity = _rigidbody.velocity.y;
@@ -96,7 +118,16 @@ public class PlayerInputHandler : MonoBehaviour
         }
         else
         {
-            //ADD FASTER DECELERATION
+            //ADD FASTER DECELERATION...Something like this? :D
+            if ((inputDirection == 0) && (_rigidbody.velocity.x > 0.1f || _rigidbody.velocity.x < -0.1f))
+            {
+                Vector2 decelerationDirection = -_rigidbody.velocity.normalized * deceleration * Time.deltaTime;
+                _rigidbody.velocity += decelerationDirection;
+                //if (grounded == true) //Affects fall rate when jumping
+                //{
+                //    _rigidbody.drag = 5;
+                //}
+            }
         }
     }
 }
