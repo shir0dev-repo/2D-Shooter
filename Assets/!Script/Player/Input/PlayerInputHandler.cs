@@ -119,7 +119,7 @@ public class PlayerInputHandler : MonoBehaviour
         else
         {
             //ADD FASTER DECELERATION...Something like this? :D
-            if ((inputDirection == 0) && (_rigidbody.velocity.x > 0.1f || _rigidbody.velocity.x < -0.1f))
+            if (/*(inputDirection == 0) &&*/ (_rigidbody.velocity.x > 0.1f || _rigidbody.velocity.x < -0.1f))
             {
                 Vector2 decelerationDirection = -_rigidbody.velocity.normalized * deceleration * Time.deltaTime;
                 _rigidbody.velocity += decelerationDirection;
