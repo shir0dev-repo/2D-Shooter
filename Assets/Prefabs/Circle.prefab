@@ -48,8 +48,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _rigidbody: {fileID: 305271895362705262}
-  _maxLifetime: 0.3
-  _velocity: 0.2
+  _maxLifetimeInSeconds: 2.5
+  _velocity: 0.4
 --- !u!212 &1707186455785882113
 SpriteRenderer:
   m_ObjectHideFlags: 0
