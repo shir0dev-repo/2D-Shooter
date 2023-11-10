@@ -5,14 +5,17 @@ using UnityEngine.InputSystem;
 [RequireComponent(typeof(Rigidbody2D))]
 public class PlayerMovement : MonoBehaviour
 {
-    [SerializeField] private float _playerMoveSpeed = 16f, _playerMaxMoveSpeed = 13f;
+    [Header("Variables")]
+    [SerializeField] private float _playerMoveSpeed = 16f;
+    [SerializeField] private float _playerMaxMoveSpeed = 13f;
     [SerializeField] private float _jumpForce = 7f;
-    [SerializeField] private Rigidbody2D _rigidbody;
+    [SerializeField] private float _decelerationForce = 20f;
 
+    [Header("References")]
+    [SerializeField] private Rigidbody2D _rigidbody;
     [SerializeField] private PlayerInputHandler _playerInputHandler;
 
     bool grounded;
-    private float _decelerationForce = 20f;
 
     private void Awake()
     {
@@ -49,7 +52,7 @@ public class PlayerMovement : MonoBehaviour
     private void HandleMovement()
     {
         //CONVERTED VECTOR 2 TO FLOAT: Since we aren't moving up and down, we only need the X component (A and D) in the Input Action (WASD).
-        float inputDirection = _playerInputHandler.MoveAction.ReadValue<float>(); 
+        float inputDirection = _playerInputHandler.MoveAction.ReadValue<float>();
 
         if (inputDirection != 0)
         {
@@ -83,7 +86,7 @@ public class PlayerMovement : MonoBehaviour
             }
         }
     }
-    private void OnCollisionEnter2D(Collision2D other) 
+    private void OnCollisionEnter2D(Collision2D other)
     {
         if (other.gameObject.CompareTag("Ground"))
         {
