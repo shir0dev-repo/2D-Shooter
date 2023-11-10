@@ -9,13 +9,13 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6505420403069703249}
-  - component: {fileID: 1962045977003520961}
+  - component: {fileID: 8278835365685905223}
   - component: {fileID: 1707186455785882113}
-  - component: {fileID: 9112799454574257360}
+  - component: {fileID: 7715453804420851285}
   - component: {fileID: 305271895362705262}
   m_Layer: 0
   m_Name: Square
-  m_TagString: Projectile
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -35,7 +35,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1962045977003520961
+--- !u!114 &8278835365685905223
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -44,10 +44,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 5707094565087259042}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d6f999f54de2aa84184a14b2642058d8, type: 3}
+  m_Script: {fileID: 11500000, guid: ed14474f0f23020489f52086d87ed101, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _enemyPrefab: {fileID: 5707094565087259042}
+  _enemyMoveSpeed: 8
   _rigidbody: {fileID: 0}
 --- !u!212 &1707186455785882113
 SpriteRenderer:
@@ -101,7 +101,7 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!61 &9112799454574257360
+--- !u!61 &7715453804420851285
 BoxCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
