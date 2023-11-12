@@ -1655,7 +1655,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _playerMoveSpeed: 16
   _playerMaxMoveSpeed: 13
-  _jumpForce: 5
+  _jumpForce: 1.3
   _decelerationForce: 20
   _rigidbody: {fileID: 1508396819}
   _playerInputHandler: {fileID: 1508396820}

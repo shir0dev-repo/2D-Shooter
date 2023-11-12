@@ -58,7 +58,7 @@ public class PlayerMovement : MonoBehaviour
         //CONVERTED VECTOR 2 TO FLOAT: Since we aren't moving up and down, we only need the X component (A and D) in the Input Action (WASD).
         float inputDirection = _playerInputHandler.MoveAction.ReadValue<float>();
 
-        if (_rigidbody.velocity.sqrMagnitude < 0.1f)
+        if (_rigidbody.velocity.sqrMagnitude < 0.5f)
             _rigidbody.velocity = Vector3.zero;
 
         if (inputDirection != 0)
@@ -77,7 +77,7 @@ public class PlayerMovement : MonoBehaviour
             }
             else
             {
-                Vector3 moveDirection = _playerMoveSpeed * Time.fixedDeltaTime * new Vector3(inputDirection, 0f).normalized;
+                Vector3 moveDirection = _playerMoveSpeed * Time.fixedDeltaTime * new Vector3(inputDirection, 0f);
                 _rigidbody.AddForce(moveDirection, ForceMode2D.Impulse); //ForceMode2D.Force for smoother movement (continuous force), and ForceMode2D.Impulse for jerkier/instant forces (jumping or knockback).
             }
         }
