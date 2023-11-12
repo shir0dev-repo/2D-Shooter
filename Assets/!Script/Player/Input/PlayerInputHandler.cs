@@ -41,8 +41,10 @@ public class PlayerInputHandler : MonoBehaviour
 
     public static Vector2 GetMousePosition()
     {
+        
         Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        return new Vector2(mousePos.x, mousePos.y).normalized;
+        Debug.Log($"MouseX: {mousePos.x} MouseY: {mousePos.y}");
+        return new Vector2(mousePos.x, mousePos.y);
     }
 }
 

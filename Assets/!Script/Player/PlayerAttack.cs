@@ -28,8 +28,8 @@ public class PlayerAttack : MonoBehaviour
         //Instantiate(), bullet script
         //write the line of code to SPAWN the BULLET PREFAB
         //Move the bullet towards the mouse
-        GameObject bullet = Instantiate(_projectilePrefab, transform.position, Quaternion.identity);
+        Projectile projectile = Instantiate(_projectilePrefab, transform.position, Quaternion.identity).GetComponent<Projectile>();
 
-        bullet.transform.up = PlayerInputHandler.GetMousePosition();
+        projectile.SetDirection(PlayerInputHandler.GetMousePosition());
     }
 }

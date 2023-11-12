@@ -17,8 +17,12 @@ public class PlayerMovement : MonoBehaviour
 
     bool grounded;
 
+    public static PlayerMovement Instance;
+
     private void Awake()
     {
+        Instance = this;
+
         //If the Rigidbody2D is NOT SET IN THE INSPECTOR, script will grab it for you.
         if (_rigidbody == null)
             _rigidbody = GetComponent<Rigidbody2D>();
@@ -53,6 +57,9 @@ public class PlayerMovement : MonoBehaviour
     {
         //CONVERTED VECTOR 2 TO FLOAT: Since we aren't moving up and down, we only need the X component (A and D) in the Input Action (WASD).
         float inputDirection = _playerInputHandler.MoveAction.ReadValue<float>();
+
+        if (_rigidbody.velocity.sqrMagnitude < 0.1f)
+            _rigidbody.velocity = Vector3.zero;
 
         if (inputDirection != 0)
         {

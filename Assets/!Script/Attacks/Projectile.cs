@@ -1,29 +1,29 @@
 using UnityEngine;
+using UnityEngine.UIElements;
 
-[RequireComponent(typeof(Rigidbody2D), typeof(Collider2D))]
+[RequireComponent(typeof(Collider2D))]
 public class Projectile : MonoBehaviour
 {
-    //rigidbody, collider, Destroy(), lifetime (float), speed (float)
-    [SerializeField] Rigidbody2D _rigidbody;
-
     [SerializeField] private float _maxLifetimeInSeconds = 0.5f;
-    [SerializeField] private float _velocity = 1f;
+    [SerializeField] private float _projectileSpeed = 1f;
+
+    private Vector3 _direction = Vector3.zero;
+    public void SetDirection(Vector3 dir)
+    {
+        _direction = (dir - transform.position).normalized;
+    }
 
     private float _despawnTimer = 0f;
 
     private void Update()
     {
-        
         //every frame, despawn timer increases by deltaTime. Eventually, this will exceed _maxLifetime.
         _despawnTimer += Time.deltaTime;
 
         if (_despawnTimer >= _maxLifetimeInSeconds)
             Destroy(gameObject);
-    }
-
-    private void FixedUpdate()
-    {
-        _rigidbody.AddForce(_velocity * Time.fixedDeltaTime * transform.up);
+        else
+            transform.position += _projectileSpeed * Time.deltaTime * _direction;
     }
 
     //A collider can move around other colliders, a trigger can't

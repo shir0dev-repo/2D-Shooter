@@ -1,8 +1,5 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEditor.Experimental.GraphView;
+using System;
 using UnityEngine;
-using UnityEngine.EventSystems;
 
 [RequireComponent(typeof(Rigidbody2D))]
 public class EnemyMovement : MonoBehaviour
@@ -19,22 +16,68 @@ public class EnemyMovement : MonoBehaviour
     }
     private void FixedUpdate()
     {
-        Vector3 rigidbodyHorizontalVelocity = _rigidbody.velocity;
 
-        float rigidbodyVerticalVelocity = _rigidbody.velocity.y;
+        HandleEnemyMovement();
+        /*        Vector3 playerPosition = PlayerMovement.Instance.PlayerPosition;
+                playerPosition.y = 0;
 
-        rigidbodyHorizontalVelocity.y = 0;
+                Vector3 rigidbodyHorizontalVelocity = _rigidbody.velocity;
+                float rigidbodyVerticalVelocity = _rigidbody.velocity.y;
 
-        if (rigidbodyHorizontalVelocity.sqrMagnitude >= _enemyMaxMoveSpeed * _enemyMaxMoveSpeed)
+                rigidbodyHorizontalVelocity.y = 0;
+
+                //Checking magnitude >= a max speed
+                if (rigidbodyHorizontalVelocity.sqrMagnitude >= _enemyMaxMoveSpeed * _enemyMaxMoveSpeed)
+                {
+                    //if the magnitude is bigger, you are setting velocity to max speed in the RIGHT direction
+                    Vector3 direction = playerPosition - transform.position;
+                    Vector3 moveDirection = transform.position + (_enemyMoveSpeed * Time.fixedDeltaTime * direction);
+
+                    _rigidbody.velocity = moveDirection.normalized;
+                    Debug.Log("Enemy Capped Speed! " + _rigidbody.velocity);
+                }
+                else
+                {
+                    Vector3 direction = playerPosition - transform.position;
+                    Vector3 moveDirection = transform.position + _enemyMoveSpeed * Time.fixedDeltaTime * direction;
+                    _rigidbody.AddForce(moveDirection, ForceMode2D.Impulse);
+                }*/
+    }
+
+    private void HandleEnemyMovement()
+    {
+        Vector3 horizontalVelocity = _rigidbody.velocity;
+        horizontalVelocity.y = 0;
+
+        Vector3 playerPosition = PlayerMovement.Instance.transform.position;
+        Vector3 direction = (playerPosition - transform.position).normalized;
+        direction.y = 0;
+
+        if (horizontalVelocity.sqrMagnitude >= _enemyMaxMoveSpeed * _enemyMaxMoveSpeed)
         {
-            _rigidbody.velocity = new Vector3(_enemyMaxMoveSpeed, rigidbodyVerticalVelocity);
-            Debug.Log("Enemy Capped Speed! " + _rigidbody.velocity);
+            direction *= _enemyMaxMoveSpeed;
+            _rigidbody.velocity = direction;
         }
         else
         {
-            Vector3 moveDirection = _enemyMoveSpeed * Time.fixedDeltaTime * new Vector3(-1f, 0, 0).normalized;
-            _rigidbody.AddForce(moveDirection, ForceMode2D.Impulse);
+            _rigidbody.AddForce(direction * _enemyMoveSpeed * Time.fixedDeltaTime, ForceMode2D.Impulse);
+        }
+    }
 
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.TryGetComponent(typeof(Projectile), out _))
+        {
+            EnemySpawner.OnEnemyKilled?.Invoke();
+            Destroy(gameObject);
         }
     }
 }
+
+/*
+
+- direction of movement (towards the player)
+- cap the speed if >= maxspeed variable
+- 
+
+*/
