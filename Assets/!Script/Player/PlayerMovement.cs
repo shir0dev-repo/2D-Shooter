@@ -1,7 +1,6 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-//OPTIONAL: When Script Requires Component, will automatically add said component when adding this script.
 [RequireComponent(typeof(Rigidbody2D))]
 public class PlayerMovement : MonoBehaviour
 {
@@ -17,13 +16,15 @@ public class PlayerMovement : MonoBehaviour
 
     bool grounded;
 
+    //Static instances (or singletons) are essentially one object of a given type that is declared the main object, or instance,
+    //and can be accessed from anywhere
     public static PlayerMovement Instance;
 
     private void Awake()
     {
+        //"this" is a keyword basically saying THIS exact instance of the object
         Instance = this;
 
-        //If the Rigidbody2D is NOT SET IN THE INSPECTOR, script will grab it for you.
         if (_rigidbody == null)
             _rigidbody = GetComponent<Rigidbody2D>();
 
@@ -55,21 +56,32 @@ public class PlayerMovement : MonoBehaviour
 
     private void HandleMovement()
     {
-        //CONVERTED VECTOR 2 TO FLOAT: Since we aren't moving up and down, we only need the X component (A and D) in the Input Action (WASD).
         float inputDirection = _playerInputHandler.MoveAction.ReadValue<float>();
 
-        if (_rigidbody.velocity.sqrMagnitude < 0.5f)
-            _rigidbody.velocity = Vector3.zero;
+        Vector3 horizontalVelocity = _rigidbody.velocity;
+        horizontalVelocity.y = 0;
 
-        if (inputDirection != 0)
+
+
+        if (inputDirection == 0)
         {
-            Vector3 rigidbodyHorizontalVelocity = _rigidbody.velocity;
+            if (horizontalVelocity.sqrMagnitude <= 0.5f)
+                _rigidbody.velocity = new Vector3(0, _rigidbody.velocity.y + (Physics2D.gravity.y * Time.fixedDeltaTime));
 
+            //Has velocity, but is NOT inputting movement
+            else //:D
+            {
+                Vector2 decelerationDirection = -horizontalVelocity.normalized * _decelerationForce * Time.fixedDeltaTime;
+                _rigidbody.AddForce(decelerationDirection, ForceMode2D.Impulse);
+            }
+
+        }
+        else
+        {
             float rigidbodyVerticalVelocity = _rigidbody.velocity.y;
 
-            rigidbodyHorizontalVelocity.y = 0;
 
-            if (rigidbodyHorizontalVelocity.sqrMagnitude >= _playerMaxMoveSpeed * _playerMaxMoveSpeed)
+            if (horizontalVelocity.sqrMagnitude >= _playerMaxMoveSpeed * _playerMaxMoveSpeed)
             {
                 Debug.Log(inputDirection);
                 _rigidbody.velocity = new Vector3(inputDirection * _playerMaxMoveSpeed, rigidbodyVerticalVelocity);
@@ -78,18 +90,7 @@ public class PlayerMovement : MonoBehaviour
             else
             {
                 Vector3 moveDirection = _playerMoveSpeed * Time.fixedDeltaTime * new Vector3(inputDirection, 0f);
-                _rigidbody.AddForce(moveDirection, ForceMode2D.Impulse); //ForceMode2D.Force for smoother movement (continuous force), and ForceMode2D.Impulse for jerkier/instant forces (jumping or knockback).
-            }
-        }
-        else
-        {
-            //ADD FASTER DECELERATION...Something like this? :D :D
-            if ((_rigidbody.velocity.x > 0.1f || _rigidbody.velocity.x < -0.1f))
-            {
-                Vector2 horizontalVelocity = _rigidbody.velocity;
-                horizontalVelocity.y = 0f;
-                Vector2 decelerationDirection = -horizontalVelocity.normalized * _decelerationForce * Time.fixedDeltaTime;
-                _rigidbody.AddForce(decelerationDirection, ForceMode2D.Impulse);
+                _rigidbody.AddForce(moveDirection, ForceMode2D.Impulse);
             }
         }
     }

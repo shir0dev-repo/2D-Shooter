@@ -3,7 +3,6 @@ using UnityEngine.InputSystem;
 
 public class PlayerAttack : MonoBehaviour
 {
-    //bullet script, bullet prefab, ref to attack action
     [SerializeField] private GameObject _projectilePrefab;
     [SerializeField] private PlayerInputHandler _playerInputHandler;
 
@@ -25,9 +24,6 @@ public class PlayerAttack : MonoBehaviour
 
     private void HandleAttack(InputAction.CallbackContext context)
     {
-        //Instantiate(), bullet script
-        //write the line of code to SPAWN the BULLET PREFAB
-        //Move the bullet towards the mouse
         Projectile projectile = Instantiate(_projectilePrefab, transform.position, Quaternion.identity).GetComponent<Projectile>();
 
         projectile.SetDirection(PlayerInputHandler.GetMousePosition());

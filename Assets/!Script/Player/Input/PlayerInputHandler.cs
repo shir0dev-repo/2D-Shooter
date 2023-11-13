@@ -47,15 +47,3 @@ public class PlayerInputHandler : MonoBehaviour
         return new Vector2(mousePos.x, mousePos.y);
     }
 }
-
-//Magnitude in this case really only means if the player is pressing WASD. magnitude == 0 if WASD is NOT pressed.
-//Square roots are slow in computing, so grabbing the SQUARED magnitude is a slight optimization.
-
-/*
-        if (inputMoveVector.sqrMagnitude > 0.01f)
-        {
-            moveDirection = new Vector3(inputMoveVector.x, inputMoveVector.y);
-            transform.position += moveDirection * Time.deltaTime * _playerMoveSpeed; //realistically, this is ALL you need to move something in unity. (in update method) teehee
-        }
-
-*/
