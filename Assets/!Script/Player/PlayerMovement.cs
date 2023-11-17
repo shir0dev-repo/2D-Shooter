@@ -1,7 +1,6 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-[RequireComponent(typeof(Rigidbody2D))]
 public class PlayerMovement : MonoBehaviour
 {
     [Header("Variables")]
@@ -83,9 +82,7 @@ public class PlayerMovement : MonoBehaviour
 
             if (horizontalVelocity.sqrMagnitude >= _playerMaxMoveSpeed * _playerMaxMoveSpeed)
             {
-                Debug.Log(inputDirection);
                 _rigidbody.velocity = new Vector3(inputDirection * _playerMaxMoveSpeed, rigidbodyVerticalVelocity);
-                Debug.Log("Capped Speed! " + _rigidbody.velocity);
             }
             else
             {
