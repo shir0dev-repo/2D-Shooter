@@ -44,3 +44,18 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
+  - name: Background
+    uniqueID: 160919109
+    locked: 0
+  - name: Obstacles
+    uniqueID: 2820847197
+    locked: 0
+  - name: Mobs
+    uniqueID: 1477629415
+    locked: 0
+  - name: Projectiles
+    uniqueID: 2947178313
+    locked: 0
+  - name: Foreground
+    uniqueID: 861216475
+    locked: 0
