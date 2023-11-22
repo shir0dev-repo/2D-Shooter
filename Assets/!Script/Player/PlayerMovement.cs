@@ -60,7 +60,8 @@ public class PlayerMovement : MonoBehaviour
         Vector3 horizontalVelocity = _rigidbody.velocity;
         horizontalVelocity.y = 0;
 
-
+        AnimationCurve c = new();
+        
 
         if (inputDirection == 0)
         {
@@ -106,6 +107,7 @@ public class PlayerMovement : MonoBehaviour
             grounded = false;
         }
     }
+
 }
 
 /*

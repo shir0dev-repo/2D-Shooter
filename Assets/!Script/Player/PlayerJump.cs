@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -12,12 +10,11 @@ public class PlayerJump : MonoBehaviour
 
     //jumpMultiplier, animcurve
     [Header("Jump Variables")]
-    [SerializeField] private float _jumpMultiplier;
     [SerializeField] private float _jumpDuration;
-    [SerializeField] private AnimationCurve _jumpCurve;
 
-
-    private InputAction _jumpAction;
+    [SerializeField] private AnimationCurve _animCurve;
+    float velocityLastFrame = 0;
+    Vector2 positionLastFrame = Vector2.zero;
 
     private void OnEnable()
     {
@@ -32,6 +29,12 @@ public class PlayerJump : MonoBehaviour
         PlayerInputHandler.Instance.JumpAction.started += HandleJump;
     }
 
+    private void FixedUpdate()
+    {
+        float verticalDisplacement = transform.position.y - positionLastFrame.y;
+
+
+    }
 
     private void OnDisable()
     {
@@ -40,8 +43,30 @@ public class PlayerJump : MonoBehaviour
 
     private void HandleJump(InputAction.CallbackContext context)
     {
-        if (IsGrounded())
-            StartCoroutine(JumpCoroutine());
+        if (!IsGrounded()) return;
+            
+        /*NEED:
+          
+
+            - Gravity (non-linear)
+            - time spent airborne variable
+            - maybe curve will work actually?
+            - velocityLastFrame
+            - velocityThisFrame
+            - time (in this case, evaluationPercent)
+            - displacement = initialVelocity * time + (1/2 * acceleration * time^2)
+            - displacement = (velocityLastFrame * evaluationPercent + 0.5f * curveMultiplier * evaluationPercent * evaluationPercent) * jumpForce;
+            - finalVelocity = 
+
+            - how to customize this ^^^ ?
+
+        float evaluationPercent = Mathf.Clamp01(timeSpentAirborne / maxJumpDuration);
+
+        float curveMultiplier = 1 - _animCurve.Evaluate(evaluationPercent);
+        player.transform.position.y -= maxPlayerGravity * curveMultiplier;
+         
+        */
+
     }
 
     private bool IsGrounded()
@@ -57,45 +82,4 @@ public class PlayerJump : MonoBehaviour
         return false;
     }
 
-    private void OnDrawGizmos()
-    {
-        Gizmos.color = Color.red;
-
-        Gizmos.DrawCube(_groundCheck.position, _groundCheckBoxSize);
-    }
-
-    private IEnumerator JumpCoroutine()
-    {
-        float timeSpentAirborne = 0f;
-
-
-        while(timeSpentAirborne < _jumpDuration)
-        {
-            timeSpentAirborne += Time.deltaTime;
-            float jumpCompletion = timeSpentAirborne / _jumpDuration; //returns value 0 - 1, over _jumpDuration seconds. ex. jD = 3, returns 0.5f at 1.5 seconds.
-
-            float jumpValue = _jumpCurve.Evaluate(jumpCompletion) * _jumpMultiplier;
-
-            transform.position += Vector3.up * jumpValue * Time.deltaTime;
-            
-            yield return new WaitForEndOfFrame();
-
-        }
-
-        yield return null; //everythings finished, so you return NOTHING.
-
-    }
 }
-
-/*
- 
-evaluate inside curve 0-1, but extend it based on _jumpduration.
-t (0 - jumpduration)
-
-jumpCompletion in the range 0 - 1. we want -1 to 1.
-
- 
-*/
-
-//overlap colliders
-//adjust and check layers
