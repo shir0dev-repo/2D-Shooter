@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class PlayerMovement : MonoBehaviour
+public class PlayerMovement : MonoBehaviour, IDamageable
 {
     [Header("Variables")]
     [SerializeField] private float _playerMoveSpeed = 16f;
@@ -13,17 +13,18 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private Rigidbody2D _rigidbody;
     [SerializeField] private PlayerInputHandler _playerInputHandler;
 
-    bool grounded;
+    [SerializeField] private LayerMask _groundCheckLayer;
+    [SerializeField] private BoxCollider2D _groundCheckCollider;
 
-    //Static instances (or singletons) are essentially one object of a given type that is declared the main object, or instance,
-    //and can be accessed from anywhere
-    public static PlayerMovement Instance;
+    public void TakeDamage()
+    {
+        GameManager.Instance.OnPlayerDeath?.Invoke();
+        Destroy(gameObject);
+    }
+
 
     private void Awake()
     {
-        //"this" is a keyword basically saying THIS exact instance of the object
-        Instance = this;
-
         if (_rigidbody == null)
             _rigidbody = GetComponent<Rigidbody2D>();
 
@@ -47,10 +48,23 @@ public class PlayerMovement : MonoBehaviour
     }
     private void HandleJump(InputAction.CallbackContext context)
     {
-        if (grounded == true)
+        if (IsGrounded())
         {
             _rigidbody.AddForce(new Vector2(0, _jumpForce), ForceMode2D.Impulse);
         }
+    }
+
+    private bool IsGrounded()
+    {
+        Collider2D[] colliders = Physics2D.OverlapBoxAll(_groundCheckCollider.transform.position, _groundCheckCollider.bounds.extents, 45f, _groundCheckLayer);
+
+        foreach (Collider2D col in colliders)
+        {
+            if (((1 << col.gameObject.layer) & _groundCheckLayer) != 0)
+                return true;
+        }
+
+        return false;
     }
 
     private void HandleMovement()
@@ -60,8 +74,7 @@ public class PlayerMovement : MonoBehaviour
         Vector3 horizontalVelocity = _rigidbody.velocity;
         horizontalVelocity.y = 0;
 
-
-
+        //DECEL CODE
         if (inputDirection == 0)
         {
             if (horizontalVelocity.sqrMagnitude <= 0.5f)
@@ -73,12 +86,15 @@ public class PlayerMovement : MonoBehaviour
                 Vector2 decelerationDirection = -horizontalVelocity.normalized * _decelerationForce * Time.fixedDeltaTime;
                 _rigidbody.AddForce(decelerationDirection, ForceMode2D.Impulse);
             }
-
         }
+
+        //MOVE CODE -> inputDirection != 0
         else
         {
-            float rigidbodyVerticalVelocity = _rigidbody.velocity.y;
+            float facingDirection = inputDirection > 0 ? 0 : 180f;
+            transform.rotation = Quaternion.Euler(0, facingDirection, 0);
 
+            float rigidbodyVerticalVelocity = _rigidbody.velocity.y;
 
             if (horizontalVelocity.sqrMagnitude >= _playerMaxMoveSpeed * _playerMaxMoveSpeed)
             {
@@ -89,21 +105,6 @@ public class PlayerMovement : MonoBehaviour
                 Vector3 moveDirection = _playerMoveSpeed * Time.fixedDeltaTime * new Vector3(inputDirection, 0f);
                 _rigidbody.AddForce(moveDirection, ForceMode2D.Impulse);
             }
-        }
-    }
-    private void OnCollisionEnter2D(Collision2D other)
-    {
-        if (other.gameObject.CompareTag("Ground"))
-        {
-            grounded = true;
-        }
-    }
-
-    private void OnCollisionExit2D(Collision2D other)
-    {
-        if (other.gameObject.CompareTag("Ground"))
-        {
-            grounded = false;
         }
     }
 }

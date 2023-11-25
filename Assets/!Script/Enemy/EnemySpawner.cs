@@ -34,7 +34,7 @@ public class EnemySpawner : MonoBehaviour
     void SpawnEnemy()
     {
         Vector3 cameraPos = Camera.main.transform.position;
-        Vector3 offScreenPosition = new Vector3(cameraPos.x, 0, 0);
+        Vector3 offScreenPosition = new Vector3(cameraPos.x, -3.5f, 0);
 
         offScreenPosition.x += Camera.main.orthographicSize + Random.Range(10, 20f);
         Instantiate(_enemyPrefab, offScreenPosition, Quaternion.identity);

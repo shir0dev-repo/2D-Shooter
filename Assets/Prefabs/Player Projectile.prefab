@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 1707186455785882113}
   - component: {fileID: 7193805372900681239}
   m_Layer: 0
-  m_Name: Projectile
+  m_Name: Player Projectile
   m_TagString: Projectile
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -48,6 +48,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _maxLifetimeInSeconds: 2.5
   _projectileSpeed: 25
+  _targetLayer:
+    serializedVersion: 2
+    m_Bits: 128
 --- !u!212 &1707186455785882113
 SpriteRenderer:
   m_ObjectHideFlags: 0
