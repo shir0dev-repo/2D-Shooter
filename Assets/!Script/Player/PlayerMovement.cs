@@ -3,18 +3,25 @@ using UnityEngine.InputSystem;
 
 public class PlayerMovement : MonoBehaviour, IDamageable
 {
-    [Header("Variables")]
+    [Header("Movement")]
     [SerializeField] private float _playerMoveSpeed = 16f;
     [SerializeField] private float _playerMaxMoveSpeed = 13f;
-    [SerializeField] private float _jumpForce = 7f;
     [SerializeField] private float _decelerationForce = 20f;
+
+    [Header("Jump")]
+    [SerializeField] private float _jumpForce = 7f;
+    [SerializeField] private float _gravityMultiplier = 3.2f;
+    [SerializeField] private float _maxVerticalVelocity = -20f;
+
+    [Header("Ground Check")]
+    [SerializeField] private LayerMask _groundCheckLayer;
+    [SerializeField] private Vector2 _groundCheckSize;
+    [SerializeField] private Vector2 _groundCheckPosition;
 
     [Header("References")]
     [SerializeField] private Rigidbody2D _rigidbody;
     [SerializeField] private PlayerInputHandler _playerInputHandler;
 
-    [SerializeField] private LayerMask _groundCheckLayer;
-    [SerializeField] private BoxCollider2D _groundCheckCollider;
 
     public void TakeDamage()
     {
@@ -56,7 +63,7 @@ public class PlayerMovement : MonoBehaviour, IDamageable
 
     private bool IsGrounded()
     {
-        Collider2D[] colliders = Physics2D.OverlapBoxAll(_groundCheckCollider.transform.position, _groundCheckCollider.bounds.extents, 45f, _groundCheckLayer);
+        Collider2D[] colliders = Physics2D.OverlapBoxAll(transform.position + (Vector3)_groundCheckPosition, _groundCheckSize, 45f, _groundCheckLayer);
 
         foreach (Collider2D col in colliders)
         {
@@ -67,12 +74,30 @@ public class PlayerMovement : MonoBehaviour, IDamageable
         return false;
     }
 
+    private void HandleGravity()
+    {
+        if (_rigidbody.velocity.y <= _maxVerticalVelocity)
+        {
+            _rigidbody.velocity = new(_rigidbody.velocity.x, _maxVerticalVelocity);
+            
+        }
+        //Will not call elif when past _maxVerticalVelocity, but will call when between it and zero.
+        else if (_rigidbody.velocity.y < 0f)
+        {
+            Vector3 gravityMultiplier = _gravityMultiplier * Time.fixedDeltaTime * Vector3.down;
+            _rigidbody.AddForce(gravityMultiplier, ForceMode2D.Impulse);
+        }
+    }
+
     private void HandleMovement()
     {
         float inputDirection = _playerInputHandler.MoveAction.ReadValue<float>();
 
+        HandleGravity();
+
         Vector3 horizontalVelocity = _rigidbody.velocity;
         horizontalVelocity.y = 0;
+
 
         //DECEL CODE
         if (inputDirection == 0)
@@ -107,27 +132,13 @@ public class PlayerMovement : MonoBehaviour, IDamageable
             }
         }
     }
+
+    private void OnDrawGizmosSelected()
+    {
+        Color gCol = Color.yellow;
+        gCol.a = 0.4f;
+        Gizmos.color = gCol;
+
+        Gizmos.DrawCube(transform.position + (Vector3)_groundCheckPosition, _groundCheckSize);
+    }
 }
-
-/*
-private void HandleMovement(InputAction.CallbackContext context)
-{
-    //If holding D key, x = 1 and y = 0. If holding A key, x = -1, y = 0. If holding W key, x = 0, y = 1. If holding S key, x = 0, y = -1.
-    //If holding W and D keys, x = 1, y = 1, actual vector size is a bit bigger than 1.
-
-    //The "Control Type" of the Action inside ActionsAsset. Normalized is readjusting the Vector2 to the range -1 and 1.
-    Vector2 inputMoveVector = context.ReadValue<Vector2>().normalized; 
-
-
-    _playerTransform.position += new Vector3(inputMoveVector.x, inputMoveVector.y);
-}
-*/
-
-/*
-    step-by-step of movement calculations:
-
-    grab COPY of rigidbody2D's velocity.
-    store yValue (gravity or jump, doesnt matter) and save it for later.
-    Take the X-only vector3, and check its MAGNITUDE (length/speed) against a maxValue.
-    If you DONT take out y-value, magnitude with X AND Y could be greater than max speed without necessarily reaching that speed (thus eliminating acceleration/wind-up (THIS WOULD BE AN EDGE CASE)).
-*/
