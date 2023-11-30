@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 261643773157400251}
   m_Layer: 7
   m_Name: Seedlong
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -51,6 +51,9 @@ MonoBehaviour:
   _moveSpeed: 8
   _maxSpeed: 12
   _rigidbody: {fileID: 98908514047303526}
+  _targetLayer:
+    serializedVersion: 2
+    m_Bits: 64
 --- !u!114 &2010005517441702019
 MonoBehaviour:
   m_ObjectHideFlags: 0

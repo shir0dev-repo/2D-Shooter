@@ -156,6 +156,9 @@ MonoBehaviour:
   _moveSpeed: 15
   _maxSpeed: 18
   _rigidbody: {fileID: 5658506817584312711}
+  _targetLayer:
+    serializedVersion: 2
+    m_Bits: 64
 --- !u!50 &5658506817584312711
 Rigidbody2D:
   serializedVersion: 4

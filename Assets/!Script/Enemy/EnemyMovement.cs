@@ -3,6 +3,8 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody2D))]
 public class EnemyMovement : Movement, IDamageable
 {
+    [SerializeField] private LayerMask _targetLayer;
+    public LayerMask TargetLayer { get { return _targetLayer; } }
     public void ToggleMovement(bool toggle)
     {
         _canMove = toggle;
@@ -43,6 +45,34 @@ public class EnemyMovement : Movement, IDamageable
         else
         {
             _rigidbody.AddForce(direction * _moveSpeed * Time.fixedDeltaTime, ForceMode2D.Impulse);
+        }
+    }
+    //private void OnTriggerEnter2D(Collider2D other)
+    //{
+    //    Debug.Log("Trigger Entered!");
+
+    //    if (!other.TryGetComponent(out IDamageable damageable)) //If collider does NOT have IDamageable interface, return.
+    //    {
+    //        Debug.Log("No IDamagableComponentFound!");
+    //        return;
+    //    }
+
+    //    if (((1 << other.gameObject.layer) & TargetLayer) != 0) //If collider layer matches target layer, take damage.
+    //    {
+    //        Debug.Log("Target layer matched!");
+    //        damageable.TakeDamage();
+    //        Destroy(gameObject);
+    //    }
+    //}
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (!collision.gameObject.TryGetComponent(out IDamageable damageable))
+            return;
+
+        if (((1 << collision.gameObject.layer) & TargetLayer) != 0)
+        {
+            damageable.TakeDamage();  
+            Destroy(gameObject);
         }
     }
 }
