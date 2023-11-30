@@ -34,7 +34,7 @@ public class EnemyShooter : MonoBehaviour
     {
         _animator.SetTrigger("_Attack");
 
-        Vector3 spawnPosition = (transform.position - target).normalized * 1.5f;
+        Vector3 spawnPosition = new Vector3((transform.position - target).normalized.x * 1.5f, -8.2f, 0);
         Instantiate(_bulletPrefab, spawnPosition, Quaternion.identity);
     }
 
