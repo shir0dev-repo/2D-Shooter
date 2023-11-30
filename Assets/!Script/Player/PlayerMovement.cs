@@ -2,17 +2,10 @@ using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class PlayerMovement : MonoBehaviour, IDamageable
+public class PlayerMovement : Movement, IDamageable
 {
-    [Header("Movement")]
-    [SerializeField] private float _playerMoveSpeed = 16f;
-    [SerializeField] private float _playerMaxMoveSpeed = 13f;
     [SerializeField] private float _decelerationForce = 20f;
-
-    [Header("References")]
-    [SerializeField] private Rigidbody2D _rigidbody;
     [SerializeField] private PlayerInputHandler _playerInputHandler;
-
 
     public void TakeDamage()
     {
@@ -20,22 +13,15 @@ public class PlayerMovement : MonoBehaviour, IDamageable
         Destroy(gameObject);
     }
 
-
-    private void Awake()
+    protected override void Awake()
     {
-        if (_rigidbody == null)
-            _rigidbody = GetComponent<Rigidbody2D>();
+        base.Awake();
 
         if (_playerInputHandler == null)
             _playerInputHandler = GetComponent<PlayerInputHandler>();
     }
 
-    private void FixedUpdate()
-    {
-        HandleMovement();
-    }
-
-    private void HandleMovement()
+    protected override void HandleMovement()
     {
         float inputDirection = _playerInputHandler.MoveAction.ReadValue<float>();
 
@@ -65,13 +51,13 @@ public class PlayerMovement : MonoBehaviour, IDamageable
 
             float rigidbodyVerticalVelocity = _rigidbody.velocity.y;
 
-            if (horizontalVelocity.sqrMagnitude >= _playerMaxMoveSpeed * _playerMaxMoveSpeed)
+            if (horizontalVelocity.sqrMagnitude >= _maxSpeed * _maxSpeed)
             {
-                _rigidbody.velocity = new Vector3(inputDirection * _playerMaxMoveSpeed, rigidbodyVerticalVelocity);
+                _rigidbody.velocity = new Vector3(inputDirection * _maxSpeed, rigidbodyVerticalVelocity);
             }
             else
             {
-                Vector3 moveDirection = _playerMoveSpeed * Time.fixedDeltaTime * new Vector3(inputDirection, 0f);
+                Vector3 moveDirection = _moveSpeed * Time.fixedDeltaTime * new Vector3(inputDirection, 0f);
                 _rigidbody.AddForce(moveDirection, ForceMode2D.Impulse);
             }
         }

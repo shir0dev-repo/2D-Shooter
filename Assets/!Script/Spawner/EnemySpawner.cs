@@ -1,10 +1,13 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
 public class EnemySpawner : MonoBehaviour
 {
     [SerializeField] private GameObject _enemyPrefab;
+
+    [SerializeField] private List<EnemyData> _enemyDataList;
 
     public static Action OnEnemyKilled { get; private set; }
 

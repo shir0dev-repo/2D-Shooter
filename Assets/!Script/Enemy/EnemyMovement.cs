@@ -1,23 +1,18 @@
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody2D))]
-public class EnemyMovement : MonoBehaviour, IDamageable
+public class EnemyMovement : Movement, IDamageable
 {
-    [SerializeField] private float _enemyMoveSpeed = 8f;
-    [SerializeField] private float _enemyMaxMoveSpeed = 10f;
-    [SerializeField] private Rigidbody2D _rigidbody;
+    public void ToggleMovement(bool toggle)
+    {
+        _canMove = toggle;
+    }
 
 
-
-    private void Awake()
+    protected override void Awake()
     {
         if (_rigidbody == null)
             _rigidbody = GetComponent<Rigidbody2D>();
-    }
-
-    private void FixedUpdate()
-    {
-        HandleEnemyMovement();
     }
 
     public void TakeDamage()
@@ -26,7 +21,7 @@ public class EnemyMovement : MonoBehaviour, IDamageable
         Destroy(gameObject);
     }
 
-    private void HandleEnemyMovement()
+    protected override void HandleMovement()
     {
         Vector3 horizontalVelocity = _rigidbody.velocity;
         horizontalVelocity.y = 0;
@@ -40,14 +35,14 @@ public class EnemyMovement : MonoBehaviour, IDamageable
 
         direction.y = 0;
 
-        if (horizontalVelocity.sqrMagnitude >= _enemyMaxMoveSpeed * _enemyMaxMoveSpeed)
+        if (horizontalVelocity.sqrMagnitude >= _maxSpeed * _maxSpeed)
         {
-            direction *= _enemyMaxMoveSpeed;
+            direction *= _maxSpeed;
             _rigidbody.velocity = direction;
         }
         else
         {
-            _rigidbody.AddForce(direction * _enemyMoveSpeed * Time.fixedDeltaTime, ForceMode2D.Impulse);
+            _rigidbody.AddForce(direction * _moveSpeed * Time.fixedDeltaTime, ForceMode2D.Impulse);
         }
     }
 }

@@ -4,8 +4,12 @@ using UnityEngine;
 
 public class EnemyShooter : MonoBehaviour
 {
-    [SerializeField] private float _attackCooldown = 1f;
+    [SerializeField] private float _attackCooldown = 5f;
     [SerializeField] private GameObject _bulletPrefab;
+
+    [SerializeField] private EnemyMovement _movement;
+    [SerializeField] private Animator _animator;
+
 
     private float _cooldownRemaining = 1f;
 
@@ -28,9 +32,10 @@ public class EnemyShooter : MonoBehaviour
 
     public void Shoot(Vector3 target)
     {
-        Projectile proj = Instantiate(_bulletPrefab, transform.position, Quaternion.identity).GetComponent<Projectile>();
+        _animator.SetTrigger("_Attack");
 
-        proj.SetDirection(target);
+        Vector3 spawnPosition = (transform.position - target).normalized * 1.5f;
+        Instantiate(_bulletPrefab, spawnPosition, Quaternion.identity);
     }
 
     private void Update()
