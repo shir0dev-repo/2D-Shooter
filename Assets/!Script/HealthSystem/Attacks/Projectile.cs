@@ -35,7 +35,7 @@ public class Projectile : MonoBehaviour
 
         if (((1 << other.gameObject.layer) & TargetLayer) != 0) //If collider layer matches target layer, take damage.
         {
-            damageable.TakeDamage();
+            damageable.TakeDamage(1);
             Destroy(gameObject);
         }
     }

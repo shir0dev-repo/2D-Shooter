@@ -11,14 +11,15 @@ public abstract class Movement : MonoBehaviour
 {
     //Protected is private with the ability to pass down to children.
 
-    //Movement._moveSpeed;
     [Header("Base")]
     [SerializeField, Min(0)] protected float _moveSpeed;
     [SerializeField, Min(0)] protected float _maxSpeed;
     [SerializeField] protected Rigidbody2D _rigidbody;
-    protected bool _canMove;
 
-    protected abstract void HandleMovement(); //Idea
+    protected bool _canMove = false;
+    public virtual bool ToggleMovement(bool canMove) => _canMove = canMove;
+
+    protected abstract void HandleMovement();
 
     protected virtual void Awake()
     {
@@ -32,11 +33,3 @@ public abstract class Movement : MonoBehaviour
         HandleMovement();
     }
 }
-
-/*
- 
-public = Starbucks
-protected = family home
-private = your mind
- 
- */

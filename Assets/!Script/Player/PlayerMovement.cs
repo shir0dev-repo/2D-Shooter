@@ -2,16 +2,10 @@ using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class PlayerMovement : Movement, IDamageable
+public class PlayerMovement : Movement
 {
     [SerializeField] private float _decelerationForce = 20f;
     [SerializeField] private PlayerInputHandler _playerInputHandler;
-
-    public void TakeDamage()
-    {
-        GameManager.Instance.OnPlayerDeath?.Invoke();
-        Destroy(gameObject);
-    }
 
     protected override void Awake()
     {

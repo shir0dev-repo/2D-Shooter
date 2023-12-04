@@ -49,6 +49,7 @@ public class PlayerInputHandler : MonoBehaviour
     private void OnDisable()
     {
         _playerActionsAsset.Disable();
+
     }
 
     public static Vector2 GetMousePosition()

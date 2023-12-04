@@ -22,7 +22,7 @@ public class PlayerAttack : MonoBehaviour
         _playerInputHandler.AttackAction.started -= HandleAttack;
     }
 
-    private void HandleAttack(InputAction.CallbackContext context)
+    public void HandleAttack(InputAction.CallbackContext context)
     {
         Projectile projectile = Instantiate(_projectilePrefab, transform.position, Quaternion.identity).GetComponent<Projectile>();
 

@@ -10,7 +10,8 @@ GameObject:
   m_Component:
   - component: {fileID: 3281263917105702306}
   - component: {fileID: 962598287835623614}
-  - component: {fileID: 2010005517441702019}
+  - component: {fileID: 7065833144375132641}
+  - component: {fileID: -1621955946710824488}
   - component: {fileID: 98908514047303526}
   - component: {fileID: 261643773157400251}
   m_Layer: 7
@@ -54,7 +55,7 @@ MonoBehaviour:
   _targetLayer:
     serializedVersion: 2
     m_Bits: 64
---- !u!114 &2010005517441702019
+--- !u!114 &7065833144375132641
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -63,13 +64,28 @@ MonoBehaviour:
   m_GameObject: {fileID: 431072768181852957}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4f393a4f29b055d4aa6616c71f2bfa25, type: 3}
+  m_Script: {fileID: 11500000, guid: 991c9eefc99bd4f4697cde0b84d7ec14, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _attackCooldown: 5
-  _bulletPrefab: {fileID: 7575621049681930694, guid: 7504fee1bb8f9474fae9f52f429f3ca6, type: 3}
-  _movement: {fileID: 962598287835623614}
-  _animator: {fileID: 8322549626962638622}
+  _attackCooldown: 2.5
+  _attackCooldownRemaining: 2.5
+  _attackReady: 0
+  _attackType: 0
+  _summonedPrefab: {fileID: 7575621049681930694, guid: 7504fee1bb8f9474fae9f52f429f3ca6, type: 3}
+  _enemyAnimationHandler: {fileID: 0}
+--- !u!114 &-1621955946710824488
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 431072768181852957}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 913144620c70926498a3e65765ea6aac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _maxHealth: 1
 --- !u!50 &98908514047303526
 Rigidbody2D:
   serializedVersion: 4
@@ -83,7 +99,7 @@ Rigidbody2D:
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
   m_Mass: 0.25
-  m_LinearDrag: 0
+  m_LinearDrag: 1
   m_AngularDrag: 0.05
   m_GravityScale: 3
   m_Material: {fileID: 0}
@@ -152,6 +168,7 @@ GameObject:
   m_Component:
   - component: {fileID: 13660837479928122}
   - component: {fileID: 1191529682748108654}
+  - component: {fileID: 3939863020357242022}
   - component: {fileID: 8322549626962638622}
   m_Layer: 0
   m_Name: Visuals
@@ -227,6 +244,21 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &3939863020357242022
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3329687670450535091}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f8d866833da234e488b5c08ea728043a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _attack: {fileID: 7065833144375132641}
+  _movement: {fileID: 0}
+  _animator: {fileID: 0}
 --- !u!95 &8322549626962638622
 Animator:
   serializedVersion: 5

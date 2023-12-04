@@ -37,4 +37,10 @@ public class GameManager : MonoBehaviour
         else 
             Destroy(gameObject);
     }
+
+    private void DisablePlayer()
+    {
+        _player.GetComponent<PlayerInputHandler>().enabled = false;
+        _player.GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Kinematic;
+    }
 }

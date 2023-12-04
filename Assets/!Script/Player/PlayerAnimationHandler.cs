@@ -10,6 +10,7 @@ public class PlayerAnimationHandler : MonoBehaviour
     private const string _LAND_TRIGGER = "_OnPlayerLanded";
     private const string _JUMP_TRIGGER = "_OnPlayerJump";
     private const string _VELOCITY = "_Velocity";
+    private const string _DEATH = "_Death";
 
     private void Awake()
     {
@@ -35,17 +36,21 @@ public class PlayerAnimationHandler : MonoBehaviour
         _playerAnimator.SetFloat(_VELOCITY, verticalVelocity);
     }
 
-    private void JumpAnimation()
+    private void JumpAnimation() => _playerAnimator.SetTrigger(_JUMP_TRIGGER);
+    private void LandAnimation() => _playerAnimator.SetTrigger(_LAND_TRIGGER);
+    public void DeathAnimation(Action callback)
     {
-        Debug.Log("jump");
-        _playerAnimator.SetTrigger(_JUMP_TRIGGER);
-//        _playerAnimator.ResetTrigger(_JUMP_TRIGGER);
+        _playerAnimator.SetTrigger(_DEATH);
+        StartCoroutine(DeathAnimationCoroutine(callback));
     }
 
-    private void LandAnimation()
+
+    private IEnumerator DeathAnimationCoroutine(Action callback) //Coroutines (IEnumerators) run separately from main game loop.
     {
-        Debug.Log("land");
-        _playerAnimator.SetTrigger(_LAND_TRIGGER);
-  //      _playerAnimator.ResetTrigger(_LAND_TRIGGER);
+        float animationDuration = _playerAnimator.GetCurrentAnimatorStateInfo(0).length;
+        
+        yield return new WaitForSeconds(animationDuration); //Yield essentially means ignore everything after until timer is up
+
+        callback();
     }
 }
