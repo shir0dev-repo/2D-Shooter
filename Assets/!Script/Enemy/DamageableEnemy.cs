@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class DamageableEnemy : Damageable
 {
+    [SerializeField] private bool _spawnNewOnDeath = false;
+    [SerializeField] int _pointsWorth;
+
     public override void TakeDamage(int damageAmount)
     {
         base.TakeDamage(damageAmount);
@@ -15,7 +18,11 @@ public class DamageableEnemy : Damageable
 
         Debug.Log("Oh no, I'm dying!");
 
-        EnemySpawner.OnEnemyKilled?.Invoke();
+        if (_spawnNewOnDeath)
+            EnemySpawner.OnEnemyKilled?.Invoke();
+
+        GameManager.Instance.OnScoreIncremented?.Invoke(_pointsWorth);
+
         Destroy(gameObject);
     }
 }

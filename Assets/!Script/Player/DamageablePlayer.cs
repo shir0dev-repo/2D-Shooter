@@ -21,7 +21,6 @@ public class DamageablePlayer : Damageable
 
     private void KillPlayer()
     {
-        
         Destroy(gameObject);
     }
 }

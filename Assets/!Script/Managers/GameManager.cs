@@ -1,46 +1,59 @@
 using System;
+using System.Collections;
 using UnityEngine;
+using TMPro;
 
-public class GameManager : MonoBehaviour
+public class GameManager : Singleton<GameManager>
 {
     [SerializeField] private PlayerMovement _player;
+    [SerializeField] TextMeshProUGUI _scoreText;
 
-    private Vector3 _lastStoredPosition = Vector3.zero;
-
-    //A Static "Instance" (also known as a Singleton Pattern) is a globally accessible reference to THIS SPECIFIC INSTANCE of the script.
-    //Typically, it is common (default even) practice to only have ONE instance of the Singleton's type, and destroy all other instances that may be created later.
-    public static GameManager Instance;
-
+    public Action<int> OnScoreIncremented;
     public Action OnPlayerDeath { get; set; }
 
-    public Vector3 PlayerPosition
-    {
-        get
-        {
-            if (_player != null)
-            {
-                _lastStoredPosition = _player.transform.position;
-                return _player.transform.position;
-            }
+    public Vector3 PlayerPosition => GetPlayerPosition();
 
-            else
-            {
-                return _lastStoredPosition;
-            }
+    private Vector3 _lastStoredPosition = Vector3.zero;
+    private int _currentScore = 0;
+    private const string SCORE_PREFIX = "Score: ";
+
+    protected override void Awake()
+    {
+        base.Awake();
+
+        UpdateScoreText();
+    }
+
+    private void OnEnable()
+    {
+        OnScoreIncremented += IncrementScore;
+    }
+
+    private void OnDisable()
+    {
+        OnScoreIncremented -= IncrementScore;
+    }
+
+    private Vector2 GetPlayerPosition()
+    {
+        if (_player != null)
+        {
+            _lastStoredPosition = _player.transform.position;
+            return _player.transform.position;
+        }
+
+        else
+        {
+            return _lastStoredPosition;
         }
     }
 
-    private void Awake()
+    void IncrementScore(int score)
     {
-        if (Instance == null)
-            Instance = this;
-        else 
-            Destroy(gameObject);
+        _currentScore += score;
+
+        UpdateScoreText();
     }
 
-    private void DisablePlayer()
-    {
-        _player.GetComponent<PlayerInputHandler>().enabled = false;
-        _player.GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Kinematic;
-    }
+    void UpdateScoreText() => _scoreText.text = SCORE_PREFIX + _currentScore.ToString();
 }

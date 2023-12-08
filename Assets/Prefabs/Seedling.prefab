@@ -173,6 +173,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _maxHealth: 1
+  _spawnNewOnDeath: 0
+  _pointsWorth: 50
 --- !u!50 &5658506817584312711
 Rigidbody2D:
   serializedVersion: 4

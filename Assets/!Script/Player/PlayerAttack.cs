@@ -25,7 +25,8 @@ public class PlayerAttack : MonoBehaviour
     public void HandleAttack(InputAction.CallbackContext context)
     {
         Projectile projectile = Instantiate(_projectilePrefab, transform.position, Quaternion.identity).GetComponent<Projectile>();
-
         projectile.SetDirection(PlayerInputHandler.GetMousePosition());
+
+        StartCoroutine(CameraController.Instance.CursorExpandCoroutine());
     }
 }

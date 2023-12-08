@@ -7,13 +7,12 @@ public class AttackSummon : Attack
 {
     [SerializeField] GameObject _summonedPrefab;
 
-    private int _maxMinions = 3;
+    [SerializeField] private int _maxMinions = 3;
 
     private List<GameObject> _summonedMinions;
 
     [SerializeField] private EnemyAnimationHandler _enemyAnimationHandler;
-
-    public Action<bool> OnAttack;
+    [SerializeField] private Vector2 _summonPoint;
 
     private void Awake()
     {
@@ -33,21 +32,34 @@ public class AttackSummon : Attack
 
     public override void HandleAttack(GameObject target = null)
     {
-        //halt movement somehow
-        //play animation
-        GameObject minion = Instantiate(_summonedPrefab, GetSummonPosition(), Quaternion.identity);
+        //remove null minions (they died, but still exist as null references)
+        _summonedMinions.RemoveAll(minion => minion == null);
+
+        GameObject minion = Instantiate(_summonedPrefab, GetSummonPosition(out Quaternion rotation), rotation);
         _summonedMinions.Add(minion);
 
         base.HandleAttack(); //reset attack timer
-
-        OnAttack?.Invoke(false);
     }
 
     private void InitAttack()
     {
         _enemyAnimationHandler.StartAttack();
-        OnAttack?.Invoke(true);
     }
 
-    private Vector2 GetSummonPosition() => transform.position + (-transform.right * 2f);
+    private Vector2 GetSummonPosition(out Quaternion rotation)
+    {
+        float direction = transform.TransformDirection(-Vector3.right).x * _summonPoint.x;
+        float yRotation = direction < transform.position.x ? 180 : 0;
+
+        rotation = Quaternion.Euler(0, yRotation, 0);
+        Vector3 position = transform.position + new Vector3(direction, _summonPoint.y, 0);
+        return position;
+    }
+
+    private void OnDrawGizmosSelected()
+    {
+        Gizmos.color = Color.green;
+
+        Gizmos.DrawWireSphere(GetSummonPosition(out _), 0.5f);
+    }
 }

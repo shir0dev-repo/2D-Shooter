@@ -47,6 +47,7 @@ public class PlayerAnimationHandler : MonoBehaviour
 
     private IEnumerator DeathAnimationCoroutine(Action callback) //Coroutines (IEnumerators) run separately from main game loop.
     {
+
         float animationDuration = _playerAnimator.GetCurrentAnimatorStateInfo(0).length;
         
         yield return new WaitForSeconds(animationDuration); //Yield essentially means ignore everything after until timer is up

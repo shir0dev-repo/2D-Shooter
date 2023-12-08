@@ -18,15 +18,7 @@ public class EnemySpawner : MonoBehaviour
 
     private void Start()
     {
-        OnEnemyKilled?.Invoke(); //the ? is the exact same as using a null check (OnEnemyKilled != null)
-
-        //if the action HAS listeners
-        /*
-         if (OnEnemyKilled != null)
-         {
-            OnEnemyKilled.Invoke();
-         }
-        */
+        SpawnEnemy();
     }
 
     private void OnDisable()
