@@ -9,7 +9,7 @@ public class DamageablePlayer : Damageable
     {
         base.Die(); //check if health is ACTUALLY zero.
 
-        GameManager.Instance.OnPlayerDeath?.Invoke();
+        GameManager.OnPlayerDeath?.Invoke();
 
         PlayerAnimationHandler animHandler = GetComponentInChildren<PlayerAnimationHandler>();
         if (animHandler != null)

@@ -1056,7 +1056,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1508396815}
-  m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: -7.3, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -1065,7 +1065,7 @@ Transform:
   - {fileID: 1240696994}
   m_Father: {fileID: 0}
   m_RootOrder: 2
-  m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!61 &1508396821
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -1661,10 +1661,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _enemyPrefab: {fileID: 431072768181852957, guid: f2cb55689dbd4e84a984e3d08aea811a, type: 3}
   _enemyDataList:
-  - EnemyType: 0
-    EnemyPrefab: {fileID: 0}
-  - EnemyType: 1
-    EnemyPrefab: {fileID: 0}
+  - {fileID: 4138777183053455364, guid: 3e1b662d8c257b4429568de6360b7ca7, type: 3}
+  - {fileID: 431072768181852957, guid: f2cb55689dbd4e84a984e3d08aea811a, type: 3}
 --- !u!1001 &5580989701094909030
 PrefabInstance:
   m_ObjectHideFlags: 0

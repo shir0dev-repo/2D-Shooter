@@ -9,8 +9,10 @@ public abstract class Attack : MonoBehaviour
     [SerializeField] protected float _attackCooldownRemaining = 5f;
     [SerializeField] protected bool _attackReady = false;
     [SerializeField] protected AttackType _attackType;
+    [SerializeField] protected LayerMask _targetLayer;
+    [SerializeField] protected int _damage;
 
-    public virtual void HandleAttack(GameObject target = null)
+    public virtual void HandleAttack()
     {
         _attackReady = false;
         _attackCooldownRemaining = _attackCooldown;

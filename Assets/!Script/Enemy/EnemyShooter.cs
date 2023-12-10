@@ -15,7 +15,7 @@ public class EnemyShooter : MonoBehaviour
 
     private void Start()
     {
-        GameManager.Instance.OnPlayerDeath += DisableAttack;
+        GameManager.OnPlayerDeath += DisableAttack;
     }
 
     private void DisableAttack()
@@ -25,7 +25,7 @@ public class EnemyShooter : MonoBehaviour
 
     private void OnDisable()
     {
-        GameManager.Instance.OnPlayerDeath -= DisableAttack;
+        GameManager.OnPlayerDeath -= DisableAttack;
     }
 
     public void Shoot(Vector3 target)

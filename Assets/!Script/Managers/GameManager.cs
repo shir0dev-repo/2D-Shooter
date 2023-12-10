@@ -9,7 +9,7 @@ public class GameManager : Singleton<GameManager>
     [SerializeField] TextMeshProUGUI _scoreText;
 
     public Action<int> OnScoreIncremented;
-    public Action OnPlayerDeath { get; set; }
+    public static Action OnPlayerDeath { get; set; }
 
     public Vector3 PlayerPosition => GetPlayerPosition();
 

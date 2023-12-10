@@ -33,19 +33,7 @@ public class EnemyMovement : Movement
         }
         else
         {
-            _rigidbody.AddForce(direction * _moveSpeed * Time.fixedDeltaTime, ForceMode2D.Impulse);
-        }
-    }
-
-    //FUTURE: Place this into AttackChase Script
-    private void OnCollisionEnter2D(Collision2D collision)
-    {
-        if (!collision.gameObject.TryGetComponent(out IDamageable damageable))
-            return;
-
-        if (((1 << collision.gameObject.layer) & TargetLayer) != 0)
-        {
-            damageable.TakeDamage(1);
+            _rigidbody.AddForce(_moveSpeed * Time.fixedDeltaTime * direction, ForceMode2D.Impulse);
         }
     }
 }

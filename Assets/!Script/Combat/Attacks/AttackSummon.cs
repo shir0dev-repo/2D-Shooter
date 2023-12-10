@@ -30,12 +30,12 @@ public class AttackSummon : Attack
             InitAttack();
     }
 
-    public override void HandleAttack(GameObject target = null)
+    public override void HandleAttack() //This better count as a projectile ;3
     {
         //remove null minions (they died, but still exist as null references)
         _summonedMinions.RemoveAll(minion => minion == null);
 
-        GameObject minion = Instantiate(_summonedPrefab, GetSummonPosition(out Quaternion rotation), rotation);
+        GameObject minion = EnemySpawner.Instance.SpawnEnemy(_summonedPrefab, GetSummonPositionX());
         _summonedMinions.Add(minion);
 
         base.HandleAttack(); //reset attack timer
@@ -46,20 +46,18 @@ public class AttackSummon : Attack
         _enemyAnimationHandler.StartAttack();
     }
 
-    private Vector2 GetSummonPosition(out Quaternion rotation)
+    private float GetSummonPositionX()
     {
         float direction = transform.TransformDirection(-Vector3.right).x * _summonPoint.x;
-        float yRotation = direction < transform.position.x ? 180 : 0;
-
-        rotation = Quaternion.Euler(0, yRotation, 0);
-        Vector3 position = transform.position + new Vector3(direction, _summonPoint.y, 0);
-        return position;
+        float posX = transform.position.x + direction;
+        
+        return posX;
     }
 
     private void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.green;
 
-        Gizmos.DrawWireSphere(GetSummonPosition(out _), 0.5f);
+        Gizmos.DrawWireCube(new Vector3(GetSummonPositionX() + transform.position.x, transform.position.y, 0f ), transform.localScale);
     }
 }

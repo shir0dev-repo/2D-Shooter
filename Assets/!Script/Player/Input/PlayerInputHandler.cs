@@ -35,19 +35,27 @@ public class PlayerInputHandler : MonoBehaviour
         //Create new "instance" or "copy" of ActionsAsset
         _playerActionsAsset = new PlayerInputActionsAsset();
 
+        
+
         //Get reference to specific action from the NAME IN ACTION ASSET IN UNITY
         _jumpAction = _playerActionsAsset.FindAction(_JUMP_ACTION_NAME);
         _moveAction = _playerActionsAsset.FindAction(_MOVE_ACTION_NAME);
         _attackAction = _playerActionsAsset.FindAction(_ATTACK_ACTION_NAME);
     }
 
+
+
+    private void DisableInput() => _playerActionsAsset.Disable();
+
     private void OnEnable() 
     {
+        GameManager.OnPlayerDeath += DisableInput;
         _playerActionsAsset.Enable();
     }
 
     private void OnDisable()
     {
+        GameManager.OnPlayerDeath -= DisableInput;
         _playerActionsAsset.Disable();
 
     }

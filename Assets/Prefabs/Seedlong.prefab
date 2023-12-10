@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: -1621955946710824488}
   - component: {fileID: 98908514047303526}
   - component: {fileID: 261643773157400251}
+  - component: {fileID: -5734910162338661532}
   m_Layer: 7
   m_Name: Seedlong
   m_TagString: Enemy
@@ -72,6 +73,10 @@ MonoBehaviour:
   _attackCooldownRemaining: 2.5
   _attackReady: 0
   _attackType: 0
+  _targetLayer:
+    serializedVersion: 2
+    m_Bits: 0
+  _damage: 0
   _summonedPrefab: {fileID: 7575621049681930694, guid: 7504fee1bb8f9474fae9f52f429f3ca6, type: 3}
   _maxMinions: 3
   _enemyAnimationHandler: {fileID: 0}
@@ -150,7 +155,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
+  m_Offset: {x: 0, y: 2}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -163,6 +168,26 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 4, y: 4}
   m_EdgeRadius: 0
+--- !u!114 &-5734910162338661532
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 431072768181852957}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 75f3fcd67d5dbb04a91139d40ab2085e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _attackCooldown: -1
+  _attackCooldownRemaining: -1
+  _attackReady: 1
+  _attackType: 0
+  _targetLayer:
+    serializedVersion: 2
+    m_Bits: 64
+  _damage: 1
 --- !u!1 &3329687670450535091
 GameObject:
   m_ObjectHideFlags: 0
@@ -190,7 +215,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3329687670450535091}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 2, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -363,7 +388,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1126340734337833235, guid: dd8b97142d76db04ea929786607791b2, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 2.5
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 1126340734337833235, guid: dd8b97142d76db04ea929786607791b2, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x

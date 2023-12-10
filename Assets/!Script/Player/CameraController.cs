@@ -40,7 +40,7 @@ public class CameraController : Singleton<CameraController>
     public Vector2 GetOffScreenPosition()
     {
         Vector2 offscreenPos = new Vector2(transform.position.x - _camera.orthographicSize, transform.position.x + _camera.orthographicSize); //X value stores left, Y value stores right.
-        return offscreenPos;
+        return offscreenPos * 2f;
     }
 
     private Vector2 PixelToWorldPoint(Vector2 pixelPosition)
