@@ -1,59 +1,98 @@
 using System;
-using System.Collections;
-using UnityEngine;
 using TMPro;
+using UnityEngine;
 
 public class GameManager : Singleton<GameManager>
 {
-    [SerializeField] private PlayerMovement _player;
+    [SerializeField] private GameObject _playerPrefab;
+    [SerializeField] Transform _spawnPoint;
+    [Space]
     [SerializeField] TextMeshProUGUI _scoreText;
+    [SerializeField] GameObject _restartUIPanel;
 
     public Action<int> OnScoreIncremented;
     public static Action OnPlayerDeath { get; set; }
-
+    public static Action OnGameRestart { get; set; }
     public Vector3 PlayerPosition => GetPlayerPosition();
+    public bool PlayerAlive => _playerAlive;
 
-    private Vector3 _lastStoredPosition = Vector3.zero;
+    private bool _playerAlive = false;
     private int _currentScore = 0;
     private const string SCORE_PREFIX = "Score: ";
 
+    Vector3 _lastStoredPosition = Vector3.zero;
+    PlayerMovement _playerMovement;
     protected override void Awake()
     {
         base.Awake();
 
         UpdateScoreText();
+
+        SpawnPlayer();
+        GetPlayerPosition();
     }
 
     private void OnEnable()
     {
         OnScoreIncremented += IncrementScore;
+
+        OnPlayerDeath += ToggleUI;
     }
 
     private void OnDisable()
     {
         OnScoreIncremented -= IncrementScore;
+
+        OnPlayerDeath -= ToggleUI;
     }
 
-    private Vector2 GetPlayerPosition()
+    public void QuitGame() => Application.Quit();
+    public void RestartGame()
     {
-        if (_player != null)
-        {
-            _lastStoredPosition = _player.transform.position;
-            return _player.transform.position;
-        }
-
-        else
-        {
-            return _lastStoredPosition;
-        }
+        SpawnPlayer();
+        OnGameRestart?.Invoke();
+        ResetScore();
     }
 
+    void ResetScore()
+    {
+        _currentScore = 0;
+        UpdateScoreText();
+    }
+    void UpdateScoreText() => _scoreText.text = SCORE_PREFIX + _currentScore.ToString();
     void IncrementScore(int score)
     {
         _currentScore += score;
 
         UpdateScoreText();
     }
+    
+    private Vector2 GetPlayerPosition()
+    {
+        if (_playerMovement != null)
+        {
+            _ = _lastStoredPosition = _playerMovement.transform.position;
 
-    void UpdateScoreText() => _scoreText.text = SCORE_PREFIX + _currentScore.ToString();
+            _playerAlive = true;
+            return _playerMovement.transform.position;
+        }
+
+        else
+        {
+            _playerAlive = false;
+            return _lastStoredPosition;
+        }
+    }
+
+    void SpawnPlayer()
+    {
+        GameObject player = Instantiate(_playerPrefab, _spawnPoint.position, Quaternion.identity);
+        _playerMovement = player.GetComponent<PlayerMovement>();
+        _ = GetPlayerPosition();
+    }
+
+    void ToggleUI()
+    {
+        _restartUIPanel.SetActive(!_restartUIPanel.activeSelf);
+    }
 }

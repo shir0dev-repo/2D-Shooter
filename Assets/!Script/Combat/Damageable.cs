@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class Damageable : MonoBehaviour, IDamageable
+public abstract class Damageable : MonoBehaviour, IDamageable, IRestartable
 {
     [SerializeField] protected int _maxHealth;
     protected int _currentHealth;
@@ -19,7 +19,15 @@ public abstract class Damageable : MonoBehaviour, IDamageable
     {
         _currentHealth = _maxHealth;
     }
+    private void OnEnable()
+    {
+        (this as IRestartable).Subscribe(); //Up-casting to inherited interface IRestartable.
+    }
 
+    private void OnDisable()
+    {
+        (this as IRestartable).Unsubscribe();
+    }
     protected virtual void Start()
     {
         OnHealthChanged?.Invoke(_currentHealth);
@@ -45,5 +53,11 @@ public abstract class Damageable : MonoBehaviour, IDamageable
             Debug.LogWarning($"{gameObject.name}'s health is not low enough to die!");
             return;
         }
+    }
+
+    public virtual void Restart()
+    {
+        _currentHealth = _maxHealth;
+        Debug.Log(gameObject.name + " is restarting!");
     }
 }

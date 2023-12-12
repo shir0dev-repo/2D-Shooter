@@ -11,6 +11,7 @@ public class PlayerAnimationHandler : MonoBehaviour
     private const string _JUMP_TRIGGER = "_OnPlayerJump";
     private const string _VELOCITY = "_Velocity";
     private const string _DEATH = "_Death";
+    private const string _ISDYING = "_isDying";
 
     private void Awake()
     {
@@ -44,14 +45,11 @@ public class PlayerAnimationHandler : MonoBehaviour
         StartCoroutine(DeathAnimationCoroutine(callback));
     }
 
-
     private IEnumerator DeathAnimationCoroutine(Action callback) //Coroutines (IEnumerators) run separately from main game loop.
     {
-
-        float animationDuration = _playerAnimator.GetCurrentAnimatorStateInfo(0).length;
-        
-        yield return new WaitForSeconds(animationDuration); //Yield essentially means ignore everything after until timer is up
-
+        yield return new WaitForEndOfFrame();
+        float animDuration = _playerAnimator.GetCurrentAnimatorStateInfo(0).length;
+        yield return new WaitForSeconds(animDuration); //Yield essentially means ignore everything after until timer is up
         callback();
     }
 }

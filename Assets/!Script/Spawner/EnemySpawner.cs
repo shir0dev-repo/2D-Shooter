@@ -3,17 +3,16 @@ using System.Collections.Generic;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
-public class EnemySpawner : Singleton<EnemySpawner>
+public class EnemySpawner : Singleton<EnemySpawner>, IRestartable
 {
-    [SerializeField] private GameObject _enemyPrefab;
-
-    [SerializeField] private List<GameObject> _enemyDataList;
+    [SerializeField] private List<GameObject> _enemyPrefabs;
 
     public static Action OnEnemyKilled { get; private set; }
 
     private void OnEnable()
     {
         OnEnemyKilled += SpawnEnemy;
+        (this as IRestartable).Subscribe();
     }
 
     private void Start()
@@ -24,11 +23,12 @@ public class EnemySpawner : Singleton<EnemySpawner>
     private void OnDisable()
     {
         OnEnemyKilled -= SpawnEnemy;
+        (this as IRestartable).Unsubscribe();
     }
 
-    void SpawnEnemy()
+    private Vector3 GetSpawnPosition()
     {
-        float xPos = Camera.main.transform.position.x;
+        float xPos = GameManager.Instance.PlayerPosition.x;
         xPos += Camera.main.orthographicSize + Random.Range(10, 20f);
         Vector3 spawnPos;
 
@@ -43,14 +43,23 @@ public class EnemySpawner : Singleton<EnemySpawner>
             spawnPos = new Vector3(xPos, 0, 0);
         }
 
+        return spawnPos;
+    }
 
-        GameObject enemy = _enemyDataList[Random.Range(0, _enemyDataList.Count)];
+    void SpawnEnemy()
+    {
+        if (!GameManager.Instance.PlayerAlive) return;
+
+        Vector3 spawnPos = GetSpawnPosition();
+
+        GameObject enemy = _enemyPrefabs[Random.Range(0, _enemyPrefabs.Count)];
 
         Instantiate(enemy, spawnPos, Quaternion.identity);
     }
 
     public GameObject SpawnEnemy(GameObject enemy, float xPosition)
     {
+        if (!GameManager.Instance.PlayerAlive) return null;
         Vector3 spawnPos;
         
         try //"if" code here doesn't work/throws error, "catch" the error (as an else statement)
@@ -71,6 +80,11 @@ public class EnemySpawner : Singleton<EnemySpawner>
     public void ForceInvoke()
     {
         OnEnemyKilled?.Invoke();
+    }
+
+    public void Restart()
+    {
+        SpawnEnemy();
     }
 }
 

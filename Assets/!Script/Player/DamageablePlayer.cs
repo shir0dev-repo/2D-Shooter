@@ -1,5 +1,8 @@
+using UnityEngine;
+
 public class DamageablePlayer : Damageable
 {
+    [SerializeField] private AudioClip _deathSound;
     public override void TakeDamage(int damageAmount)
     {
         base.TakeDamage(damageAmount);
@@ -9,7 +12,8 @@ public class DamageablePlayer : Damageable
     {
         base.Die(); //check if health is ACTUALLY zero.
 
-        GameManager.OnPlayerDeath?.Invoke();
+        Debug.Log("dead");
+        AudioManager.Instance.PlayAudio(_deathSound);
 
         PlayerAnimationHandler animHandler = GetComponentInChildren<PlayerAnimationHandler>();
         if (animHandler != null)
@@ -21,6 +25,7 @@ public class DamageablePlayer : Damageable
 
     private void KillPlayer()
     {
+        GameManager.OnPlayerDeath?.Invoke();
         Destroy(gameObject);
     }
 }

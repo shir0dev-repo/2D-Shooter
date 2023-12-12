@@ -25,4 +25,10 @@ public class DamageableEnemy : Damageable
 
         Destroy(gameObject);
     }
+
+    public override void Restart()
+    {
+        base.Restart();
+        Destroy(gameObject);
+    }
 }

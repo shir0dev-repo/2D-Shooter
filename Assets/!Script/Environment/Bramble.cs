@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class Bramble : Movement
+public class Bramble : Movement, IRestartable
 {
     protected override void HandleMovement()
     {
@@ -14,15 +14,18 @@ public class Bramble : Movement
         _rigidbody.gravityScale = 0;
     }
 
-    // Start is called before the first frame update
-    void Start()
+    private void OnEnable()
     {
-
+        (this as IRestartable).Subscribe();
     }
 
-    // Update is called once per frame
-    void Update()
+    private void OnDisable()
     {
+        (this as IRestartable).Unsubscribe();
+    }
 
+    public void Restart()
+    {
+        Destroy(gameObject);
     }
 }

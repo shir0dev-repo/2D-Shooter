@@ -26,7 +26,6 @@ public class AttackCollision : Attack
         {
             float xCutoff = CameraController.Instance.GetOffScreenPosition().x;
 
-            Debug.Log(xCutoff);
             if (transform.position.x < xCutoff)
             {
                 Destroy(gameObject);
@@ -37,7 +36,6 @@ public class AttackCollision : Attack
 
     public override void HandleAttack()
     {
-        Debug.Log("Attack ready!");
         if (_destroyOffScreen)
             _readyToDestroy = true;
     }

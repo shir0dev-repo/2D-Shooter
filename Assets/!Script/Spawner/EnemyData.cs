@@ -1,3 +1,5 @@
+using System.Diagnostics; //Namespace containing the Stopwatch object.
+using Debug = UnityEngine.Debug; //This line ensures we are using the correct Debug.Log method.
 using UnityEngine;
 
 [System.Serializable]
