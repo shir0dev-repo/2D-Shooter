@@ -3,9 +3,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(Rigidbody2D))]
 public abstract class Damageable : MonoBehaviour, IDamageable, IRestartable
 {
     [SerializeField] protected int _maxHealth;
+    protected Rigidbody2D _rigidbody;
     protected int _currentHealth;
     protected bool _isInvulnerable;
 
@@ -15,8 +17,10 @@ public abstract class Damageable : MonoBehaviour, IDamageable, IRestartable
 
     public Action<int> OnHealthChanged;
 
+
     protected virtual void Awake()
     {
+        _rigidbody = GetComponent<Rigidbody2D>();
         _currentHealth = _maxHealth;
     }
     private void OnEnable()
@@ -28,6 +32,7 @@ public abstract class Damageable : MonoBehaviour, IDamageable, IRestartable
     {
         (this as IRestartable).Unsubscribe();
     }
+    
     protected virtual void Start()
     {
         OnHealthChanged?.Invoke(_currentHealth);
@@ -45,7 +50,6 @@ public abstract class Damageable : MonoBehaviour, IDamageable, IRestartable
             Die();
         }
     }
-
     public virtual void Die()
     {
         if (_currentHealth > 0)
@@ -53,11 +57,12 @@ public abstract class Damageable : MonoBehaviour, IDamageable, IRestartable
             Debug.LogWarning($"{gameObject.name}'s health is not low enough to die!");
             return;
         }
+
+        _isInvulnerable = true;
     }
 
     public virtual void Restart()
     {
         _currentHealth = _maxHealth;
-        Debug.Log(gameObject.name + " is restarting!");
     }
 }

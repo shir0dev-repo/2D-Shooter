@@ -222,6 +222,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1b1316d1380d93a4d9a7abcc9d5e5fd7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _attackCooldown: 0.25
+  _attackCooldownRemaining: 0
+  _attackReady: 1
+  _attackType: 0
+  _targetLayer:
+    serializedVersion: 2
+    m_Bits: 128
+  _damage: 1
   _projectilePrefab: {fileID: 5707094565087259042, guid: 73eb6052ad81af24ea84061bd2229d23, type: 3}
   _playerInputHandler: {fileID: 0}
   _attackSound: {fileID: 8300000, guid: 4a7ce1ca58588e44a87d5709d820bea7, type: 3}
@@ -239,6 +247,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _maxHealth: 4
   _deathSound: {fileID: 8300000, guid: 01fa5767410a8a843b93af95a5a36016, type: 3}
+  _invulnTimer: 0.75
 --- !u!61 &2667089460229085009
 BoxCollider2D:
   m_ObjectHideFlags: 0

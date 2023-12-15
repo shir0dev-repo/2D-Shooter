@@ -1,12 +1,14 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
 public class EnemySpawner : Singleton<EnemySpawner>, IRestartable
 {
-    [SerializeField] private List<GameObject> _enemyPrefabs;
-
+    [SerializeField] private GameObject _enemyPrefab;
+    [SerializeField] private GameObject _obstaclePrefab;
+    [SerializeField] private static List<GameObject> _spawnedEnemies = new();
     public static Action OnEnemyKilled { get; private set; }
 
     private void OnEnable()
@@ -18,12 +20,14 @@ public class EnemySpawner : Singleton<EnemySpawner>, IRestartable
     private void Start()
     {
         SpawnEnemy();
+        StartCoroutine(SpawnObstacleCoroutine());
     }
 
     private void OnDisable()
     {
         OnEnemyKilled -= SpawnEnemy;
         (this as IRestartable).Unsubscribe();
+        StopAllCoroutines();
     }
 
     private Vector3 GetSpawnPosition()
@@ -45,16 +49,17 @@ public class EnemySpawner : Singleton<EnemySpawner>, IRestartable
 
         return spawnPos;
     }
-
+    public void RemoveEnemy(GameObject enemy)
+    {
+        _spawnedEnemies.Remove(enemy);
+    }
     void SpawnEnemy()
     {
-        if (!GameManager.Instance.PlayerAlive) return;
+        if (!GameManager.Instance.PlayerAlive || _spawnedEnemies.Count > 0) return;
 
         Vector3 spawnPos = GetSpawnPosition();
 
-        GameObject enemy = _enemyPrefabs[Random.Range(0, _enemyPrefabs.Count)];
-
-        Instantiate(enemy, spawnPos, Quaternion.identity);
+        _spawnedEnemies.Add(Instantiate(_enemyPrefab, spawnPos, Quaternion.identity));
     }
 
     public GameObject SpawnEnemy(GameObject enemy, float xPosition)
@@ -84,9 +89,27 @@ public class EnemySpawner : Singleton<EnemySpawner>, IRestartable
 
     public void Restart()
     {
+        _spawnedEnemies.Clear();
         SpawnEnemy();
+        StopAllCoroutines();
+        StartCoroutine(SpawnObstacleCoroutine());
+    }
+
+    IEnumerator SpawnObstacleCoroutine()
+    {
+        while (GameManager.Instance.PlayerAlive)
+        {
+            int waitTime = Random.Range(5, 12);
+            yield return new WaitForSeconds(waitTime);
+
+            if (!GameManager.Instance.PlayerAlive) break;
+
+            SpawnEnemy(_obstaclePrefab, GetSpawnPosition().x);
+        }
     }
 }
+
+
 
 /*
  

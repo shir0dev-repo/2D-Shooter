@@ -161,6 +161,7 @@ MonoBehaviour:
   _targetLayer:
     serializedVersion: 2
     m_Bits: 64
+  _initialMovementDelay: 0.75
 --- !u!114 &-6981494338935434638
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -198,7 +199,7 @@ Rigidbody2D:
     m_Bits: 0
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 128
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
@@ -260,11 +261,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 75f3fcd67d5dbb04a91139d40ab2085e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _attackCooldown: -1
-  _attackCooldownRemaining: -1
+  _attackCooldown: 1
+  _attackCooldownRemaining: 1
   _attackReady: 0
   _attackType: 0
   _targetLayer:
     serializedVersion: 2
     m_Bits: 64
   _damage: 1
+  _destroyOffScreen: 0

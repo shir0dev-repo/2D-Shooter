@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class PlayerAttack : MonoBehaviour
+public class PlayerAttack : Attack
 {
     [SerializeField] private GameObject _projectilePrefab;
     [SerializeField] private PlayerInputHandler _playerInputHandler;
@@ -15,16 +15,24 @@ public class PlayerAttack : MonoBehaviour
 
     private void Start()
     {
-        _playerInputHandler.AttackAction.started += HandleAttack;
+        _playerInputHandler.AttackAction.started += RegisterInput;
     }
 
     private void OnDisable()
     {
-        _playerInputHandler.AttackAction.started -= HandleAttack;
+        _playerInputHandler.AttackAction.started -= RegisterInput;
     }
 
-    public void HandleAttack(InputAction.CallbackContext context)
+    private void RegisterInput(InputAction.CallbackContext context)
     {
+        if (!_attackReady) return;
+        else
+            HandleAttack();
+    }
+    public override void HandleAttack()
+    {
+        base.HandleAttack();
+
         AudioManager.Instance.PlayAudio(_attackSound);
         Projectile projectile = Instantiate(_projectilePrefab, transform.position, Quaternion.identity).GetComponent<Projectile>();
         projectile.SetDirection(PlayerInputHandler.GetMousePosition());

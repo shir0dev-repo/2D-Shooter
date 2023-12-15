@@ -11,10 +11,10 @@ GameObject:
   - component: {fileID: 3281263917105702306}
   - component: {fileID: 962598287835623614}
   - component: {fileID: 7065833144375132641}
+  - component: {fileID: -5734910162338661532}
   - component: {fileID: -1621955946710824488}
   - component: {fileID: 98908514047303526}
   - component: {fileID: 261643773157400251}
-  - component: {fileID: -5734910162338661532}
   m_Layer: 7
   m_Name: Seedlong
   m_TagString: Enemy
@@ -57,6 +57,7 @@ MonoBehaviour:
   _targetLayer:
     serializedVersion: 2
     m_Bits: 64
+  _initialMovementDelay: 0
 --- !u!114 &7065833144375132641
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -81,6 +82,27 @@ MonoBehaviour:
   _maxMinions: 3
   _enemyAnimationHandler: {fileID: 0}
   _summonPoint: {x: 4.5, y: -1.5}
+--- !u!114 &-5734910162338661532
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 431072768181852957}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 75f3fcd67d5dbb04a91139d40ab2085e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _attackCooldown: 1
+  _attackCooldownRemaining: 0
+  _attackReady: 1
+  _attackType: 0
+  _targetLayer:
+    serializedVersion: 2
+    m_Bits: 64
+  _damage: 1
+  _destroyOffScreen: 0
 --- !u!114 &-1621955946710824488
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -118,7 +140,7 @@ Rigidbody2D:
     m_Bits: 0
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 128
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
@@ -168,26 +190,6 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 4, y: 4}
   m_EdgeRadius: 0
---- !u!114 &-5734910162338661532
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 431072768181852957}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 75f3fcd67d5dbb04a91139d40ab2085e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _attackCooldown: -1
-  _attackCooldownRemaining: -1
-  _attackReady: 1
-  _attackType: 0
-  _targetLayer:
-    serializedVersion: 2
-    m_Bits: 64
-  _damage: 1
 --- !u!1 &3329687670450535091
 GameObject:
   m_ObjectHideFlags: 0

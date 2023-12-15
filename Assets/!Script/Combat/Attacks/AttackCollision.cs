@@ -50,20 +50,48 @@ public class AttackCollision : Attack
         if (((1 << collision.gameObject.layer) & _targetLayer) != 0)
         {
             damageable.TakeDamage(_damage);
+            base.HandleAttack();
         }
     }
+    private void OnCollisionStay2D(Collision2D collision)
+    {
+        if (_isTrigger) return;
 
+        if (!_attackReady) return;
+
+        if (!collision.gameObject.TryGetComponent(out IDamageable damageable)) return;
+
+        if (((1 << collision.gameObject.layer) & _targetLayer) != 0)
+        {
+            damageable.TakeDamage(_damage);
+            base.HandleAttack();
+        }
+    }
 
     private void OnTriggerEnter2D(Collider2D other)
     {
         if (!_isTrigger) return;
 
-        if (!other.gameObject.TryGetComponent(out IDamageable damageable))
-            return;
+        if (!other.gameObject.TryGetComponent(out IDamageable damageable)) return;
 
         if (((1 << other.gameObject.layer) & _targetLayer) != 0)
         {
             damageable.TakeDamage(_damage);
+            base.HandleAttack();
+        }
+    }
+    private void OnTriggerStay2D(Collider2D other)
+    {
+        if (!_isTrigger) return;
+
+        if (!_attackReady) return;
+
+        if (!other.TryGetComponent(out IDamageable damageable)) return;
+
+        if (((1 << other.gameObject.layer) & _targetLayer) != 0)
+        {
+            damageable.TakeDamage(_damage);
+            base.HandleAttack();
         }
     }
 }

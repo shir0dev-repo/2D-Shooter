@@ -2,10 +2,7 @@ using UnityEngine;
 
 public class Bramble : Movement, IRestartable
 {
-    protected override void HandleMovement()
-    {
-        _rigidbody.velocity = Vector2.left * _maxSpeed;
-    }
+
 
     protected override void Awake()
     {
@@ -22,6 +19,11 @@ public class Bramble : Movement, IRestartable
     private void OnDisable()
     {
         (this as IRestartable).Unsubscribe();
+    }
+
+    protected override void HandleMovement()
+    {
+        _rigidbody.velocity = Vector2.left * _maxSpeed;
     }
 
     public void Restart()

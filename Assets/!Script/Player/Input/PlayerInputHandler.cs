@@ -44,20 +44,19 @@ public class PlayerInputHandler : MonoBehaviour
     }
 
 
-
+    private void EnableInput() => _playerActionsAsset.Enable();
     private void DisableInput() => _playerActionsAsset.Disable();
 
     private void OnEnable() 
     {
         GameManager.OnPlayerDeath += DisableInput;
-        _playerActionsAsset.Enable();
+        EnableInput();
     }
 
     private void OnDisable()
     {
         GameManager.OnPlayerDeath -= DisableInput;
-        _playerActionsAsset.Disable();
-
+        DisableInput();
     }
 
     public static Vector2 GetMousePosition()

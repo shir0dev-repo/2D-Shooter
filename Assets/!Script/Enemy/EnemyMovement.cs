@@ -4,13 +4,24 @@ using UnityEngine;
 public class EnemyMovement : Movement
 {
     [SerializeField] private LayerMask _targetLayer;
-    public LayerMask TargetLayer { get { return _targetLayer; } }
+    [SerializeField] private float _initialMovementDelay;
 
     public override bool ToggleMovement(bool canMove)
     {
         _rigidbody.velocity = Vector2.zero;
 
         return base.ToggleMovement(canMove);
+    }
+
+    protected override void FixedUpdate()
+    {
+        if (_initialMovementDelay > 0)
+        {
+            _initialMovementDelay -= Time.fixedDeltaTime;
+            return;
+        }
+
+        base.FixedUpdate();
     }
 
     protected override void HandleMovement()

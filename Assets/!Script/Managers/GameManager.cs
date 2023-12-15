@@ -1,4 +1,5 @@
 using System;
+using System.Runtime.Serialization;
 using TMPro;
 using UnityEngine;
 
@@ -8,6 +9,7 @@ public class GameManager : Singleton<GameManager>
     [SerializeField] Transform _spawnPoint;
     [Space]
     [SerializeField] TextMeshProUGUI _scoreText;
+    [SerializeField] TextMeshProUGUI _highScoreText;
     [SerializeField] GameObject _restartUIPanel;
 
     public Action<int> OnScoreIncremented;
@@ -18,7 +20,11 @@ public class GameManager : Singleton<GameManager>
 
     private bool _playerAlive = false;
     private int _currentScore = 0;
+    private int _highScore = 0;
     private const string SCORE_PREFIX = "Score: ";
+    private const string HIGH_SCORE_PREFIX = "Best: ";
+    private static Vector2Int scorePosOnDeath = new Vector2Int(-150, 125);
+    private static Vector2Int scorePosOnRestart = new Vector2Int(-512, 365);
 
     Vector3 _lastStoredPosition = Vector3.zero;
     PlayerMovement _playerMovement;
@@ -48,9 +54,12 @@ public class GameManager : Singleton<GameManager>
 
     public void QuitGame()
     {
-        if (Application.isPlaying)
-            UnityEditor.EditorApplication.isPlaying = false;
-    }   
+#if UNITY_EDITOR
+        UnityEditor.EditorApplication.isPlaying = false;
+#else
+        Application.Quit();
+#endif
+    }
 
     public void RestartGame()
     {
@@ -63,15 +72,21 @@ public class GameManager : Singleton<GameManager>
     {
         _currentScore = 0;
         UpdateScoreText();
+        _scoreText.rectTransform.anchoredPosition = scorePosOnRestart;
     }
     void UpdateScoreText() => _scoreText.text = SCORE_PREFIX + _currentScore.ToString();
+    void UpdateHighScoreText() => _highScoreText.text = HIGH_SCORE_PREFIX + _highScore.ToString();
     void IncrementScore(int score)
     {
         _currentScore += score;
 
         UpdateScoreText();
     }
-    
+    void FindBestScore()
+    {
+        _highScore = (_currentScore > _highScore) ? _currentScore : _highScore;
+    }
+
     private Vector2 GetPlayerPosition()
     {
         if (_playerMovement != null)
@@ -98,6 +113,9 @@ public class GameManager : Singleton<GameManager>
 
     void ToggleUI()
     {
+        FindBestScore();
+        UpdateHighScoreText();
+        _scoreText.rectTransform.anchoredPosition = scorePosOnDeath;
         _restartUIPanel.SetActive(!_restartUIPanel.activeSelf);
     }
 }

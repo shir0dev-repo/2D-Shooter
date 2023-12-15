@@ -16,13 +16,12 @@ public class DamageableEnemy : Damageable
     {
         base.Die();
 
-        Debug.Log("Oh no, I'm dying!");
+        EnemySpawner.Instance.RemoveEnemy(gameObject);
 
         if (_spawnNewOnDeath)
             EnemySpawner.OnEnemyKilled?.Invoke();
-
+        
         GameManager.Instance.OnScoreIncremented?.Invoke(_pointsWorth);
-
         Destroy(gameObject);
     }
 
