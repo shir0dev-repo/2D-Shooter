@@ -7,18 +7,23 @@ public class PlayerInputHandler : MonoBehaviour
     private const string _MOVE_ACTION_NAME = "Move";
     private const string _ATTACK_ACTION_NAME = "Attack";
     private const string _JUMP_ACTION_NAME = "Jump";
+    private const string _PAUSE_ACTION_NAME = "Pause";
 
     //GETtable by any script, but not SETtable.
     public static PlayerInputHandler Instance { get; private set; }
     public InputAction MoveAction { get { return _moveAction; } }
     public InputAction JumpAction { get { return _jumpAction; } }
     public InputAction AttackAction { get { return _attackAction; } }
+    public InputAction PauseAction { get { return _pauseAction; } }
 
     private InputAction _moveAction;
     private InputAction _jumpAction;
     private InputAction _attackAction;
+    private InputAction _pauseAction;
 
     private PlayerInputActionsAsset _playerActionsAsset;
+
+    private static bool _isPaused = false;
 
     private void Awake()
     {
@@ -41,6 +46,7 @@ public class PlayerInputHandler : MonoBehaviour
         _jumpAction = _playerActionsAsset.FindAction(_JUMP_ACTION_NAME);
         _moveAction = _playerActionsAsset.FindAction(_MOVE_ACTION_NAME);
         _attackAction = _playerActionsAsset.FindAction(_ATTACK_ACTION_NAME);
+        _pauseAction = _playerActionsAsset.FindAction(_PAUSE_ACTION_NAME);
     }
 
 
@@ -50,12 +56,14 @@ public class PlayerInputHandler : MonoBehaviour
     private void OnEnable() 
     {
         GameManager.OnPlayerDeath += DisableInput;
+        _pauseAction.started += PauseGame;
         EnableInput();
     }
 
     private void OnDisable()
     {
         GameManager.OnPlayerDeath -= DisableInput;
+        _pauseAction.started -= PauseGame;
         DisableInput();
     }
 
@@ -63,5 +71,11 @@ public class PlayerInputHandler : MonoBehaviour
     {
         Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         return new Vector2(mousePos.x, mousePos.y);
+    }
+
+    void PauseGame(InputAction.CallbackContext ctx)
+    {
+        Time.timeScale = _isPaused ? 1 : 0;
+        GameManager.Instance.ToggleUI();
     }
 }

@@ -30,6 +30,12 @@ public class EnemySpawner : Singleton<EnemySpawner>, IRestartable
         StopAllCoroutines();
     }
 
+    protected override void OnApplicationQuit()
+    {
+        StopAllCoroutines();
+        base.OnApplicationQuit();
+    }
+
     private Vector3 GetSpawnPosition()
     {
         float xPos = GameManager.Instance.PlayerPosition.x;

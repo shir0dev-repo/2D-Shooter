@@ -111,7 +111,7 @@ public class GameManager : Singleton<GameManager>
         _ = GetPlayerPosition();
     }
 
-    void ToggleUI()
+    public void ToggleUI()
     {
         FindBestScore();
         UpdateHighScoreText();

@@ -22,7 +22,7 @@ public class CameraController : Singleton<CameraController>
         _worldToPixelSize.x = Screen.width / _cameraWorldSize.x;
         _worldToPixelSize.y = Screen.height / _cameraWorldSize.y;
         Cursor.visible = false;
-        Cursor.lockState = CursorLockMode.Confined;
+        //Cursor.lockState = CursorLockMode.Confined;
     }
     
     private void Update()
