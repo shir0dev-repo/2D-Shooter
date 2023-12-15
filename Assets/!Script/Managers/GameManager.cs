@@ -46,7 +46,12 @@ public class GameManager : Singleton<GameManager>
         OnPlayerDeath -= ToggleUI;
     }
 
-    public void QuitGame() => Application.Quit();
+    public void QuitGame()
+    {
+        if (Application.isPlaying)
+            UnityEditor.EditorApplication.isPlaying = false;
+    }   
+
     public void RestartGame()
     {
         SpawnPlayer();
