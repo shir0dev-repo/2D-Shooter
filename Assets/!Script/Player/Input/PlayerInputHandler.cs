@@ -75,7 +75,18 @@ public class PlayerInputHandler : MonoBehaviour
 
     void PauseGame(InputAction.CallbackContext ctx)
     {
-        Time.timeScale = _isPaused ? 1 : 0;
+        _isPaused = !_isPaused;
+        if  (_isPaused)
+        {
+            Cursor.visible = true;
+            Time.timeScale = 0;
+        }
+        else
+        {
+            Cursor.visible = false;
+            Time.timeScale = 1;
+        }
+
         GameManager.Instance.ToggleUI();
     }
 }

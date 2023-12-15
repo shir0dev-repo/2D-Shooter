@@ -15,6 +15,7 @@ public class PlayerAttack : Attack
 
     private void Start()
     {
+
         _playerInputHandler.AttackAction.started += RegisterInput;
     }
 

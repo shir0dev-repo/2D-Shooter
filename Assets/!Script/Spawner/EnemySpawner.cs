@@ -11,6 +11,8 @@ public class EnemySpawner : Singleton<EnemySpawner>, IRestartable
     [SerializeField] private static List<GameObject> _spawnedEnemies = new();
     public static Action OnEnemyKilled { get; private set; }
 
+
+
     private void OnEnable()
     {
         OnEnemyKilled += SpawnEnemy;
@@ -28,12 +30,6 @@ public class EnemySpawner : Singleton<EnemySpawner>, IRestartable
         OnEnemyKilled -= SpawnEnemy;
         (this as IRestartable).Unsubscribe();
         StopAllCoroutines();
-    }
-
-    protected override void OnApplicationQuit()
-    {
-        StopAllCoroutines();
-        base.OnApplicationQuit();
     }
 
     private Vector3 GetSpawnPosition()
@@ -105,13 +101,14 @@ public class EnemySpawner : Singleton<EnemySpawner>, IRestartable
     {
         while (GameManager.Instance.PlayerAlive)
         {
-            int waitTime = Random.Range(5, 12);
-            yield return new WaitForSeconds(waitTime);
-
-            if (!GameManager.Instance.PlayerAlive) break;
+            if (GameManager.Instance == null || !GameManager.Instance.PlayerAlive) yield break;
 
             SpawnEnemy(_obstaclePrefab, GetSpawnPosition().x);
+
+            int waitTime = Random.Range(5, 12);
+            yield return new WaitForSeconds(waitTime);
         }
+        yield return null;
     }
 }
 
