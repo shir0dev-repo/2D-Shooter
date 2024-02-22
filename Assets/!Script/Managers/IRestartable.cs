@@ -6,13 +6,13 @@ public interface IRestartable
 {
     virtual void Subscribe()
     {
-        if (GameManager.Instance != null)
+        if (MainManager.Instance != null)
             GameManager.OnGameRestart += Restart;
     }
 
-    virtual void Unsubscribe() 
-    { 
-        if (GameManager.Instance != null)
+    virtual void Unsubscribe()
+    {
+        if (MainManager.Instance != null)
             GameManager.OnGameRestart -= Restart;
     }
 

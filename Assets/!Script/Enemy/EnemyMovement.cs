@@ -29,7 +29,7 @@ public class EnemyMovement : Movement
         Vector3 horizontalVelocity = _rigidbody.velocity;
         horizontalVelocity.y = 0;
 
-        Vector3 playerPosition = GameManager.Instance.PlayerPosition;
+        Vector3 playerPosition = MainManager.Instance.GameManager.PlayerPosition;
 
         Vector3 direction = (playerPosition - transform.position).normalized;
         float facingDirection = direction.x > 0 ? 180f : 0f;

@@ -1,15 +1,10 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(AudioSource))]
-public class AudioManager : Singleton<AudioManager>
+public class AudioManager : MonoBehaviour
 {
-
-    protected override void Awake()
+    private void Awake()
     {
-        base.Awake();
-
         AudioListener.volume = 0.5f;
     }
     public void PlayAudio(AudioClip clip)

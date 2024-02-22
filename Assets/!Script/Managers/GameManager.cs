@@ -2,15 +2,10 @@ using System;
 using TMPro;
 using UnityEngine;
 
-public class GameManager : Singleton<GameManager>
+public class GameManager : MonoBehaviour
 {
     [SerializeField] private GameObject _playerPrefab;
     [SerializeField] Transform _spawnPoint;
-    [Space]
-    [SerializeField] TextMeshProUGUI _scoreText;
-    [SerializeField] TextMeshProUGUI _highScoreText;
-    [SerializeField] GameObject _restartUIPanel;
-    [SerializeField] GameObject _restartBtn;
 
     public Action<int> OnScoreIncremented;
     public static Action OnPlayerDeath { get; set; }
@@ -21,25 +16,20 @@ public class GameManager : Singleton<GameManager>
     private bool _playerAlive = false;
     private int _currentScore = 0;
     private int _highScore = 0;
-    private const string SCORE_PREFIX = "Score: ";
-    private const string HIGH_SCORE_PREFIX = "Best: ";
-    private static Vector2Int scorePosOnDeath = new Vector2Int(-150, 125);
-    private static Vector2Int defaultScorePos = new Vector2Int(-512, 365);
 
     Vector3 _lastStoredPosition = Vector3.zero;
     PlayerMovement _playerMovement;
-    protected override void Awake()
+
+    private void Start()
     {
-        base.Awake();
-
-        UpdateScoreText();
-
-        SpawnPlayer();
-        GetPlayerPosition();
+        MainManager.Instance.UIManager.UpdateScoreText(0);
     }
 
     private void OnEnable()
     {
+        SceneHandler.OnSceneLoaded += SpawnPlayer;
+
+        OnGameRestart += ResetScore;
         OnScoreIncremented += IncrementScore;
         OnPlayerDeath += KillPlayer;
 
@@ -48,50 +38,40 @@ public class GameManager : Singleton<GameManager>
 
     private void OnDisable()
     {
+        SceneHandler.OnSceneLoaded -= SpawnPlayer;
+
+        OnGameRestart -= ResetScore;
         OnScoreIncremented -= IncrementScore;
-
         OnPlayerDeath -= KillPlayer;
-    }
-
-    public void QuitGame()
-    {
-#if UNITY_EDITOR
-        UnityEditor.EditorApplication.isPlaying = false;
-#else
-        Application.Quit();
-#endif
     }
 
     void KillPlayer()
     {
         _playerAlive = false;
-        ToggleUI();
-    }
-
-    public void RestartGame()
-    {
-        SpawnPlayer();
-        OnGameRestart?.Invoke();
-        ResetScore();
+        if (NewHighScore())
+            MainManager.Instance.UIManager.UpdateHighScoreText(_highScore);
+        MainManager.Instance.UIManager.ToggleUI();
     }
 
     void ResetScore()
     {
         _currentScore = 0;
-        UpdateScoreText();
-        _scoreText.rectTransform.anchoredPosition = defaultScorePos;
+        MainManager.Instance.UIManager.UpdateScoreText(0);
     }
-    void UpdateScoreText() => _scoreText.text = SCORE_PREFIX + _currentScore.ToString();
-    void UpdateHighScoreText() => _highScoreText.text = HIGH_SCORE_PREFIX + _highScore.ToString();
+
     void IncrementScore(int score)
     {
         _currentScore += score;
 
-        UpdateScoreText();
+        MainManager.Instance.UIManager.UpdateScoreText(_currentScore);
     }
-    void FindBestScore()
+    bool NewHighScore()
     {
-        _highScore = (_currentScore > _highScore) ? _currentScore : _highScore;
+        if (_currentScore > _highScore)
+            _highScore = _currentScore;
+
+        // if current score is assigned to high score, it is a new high score, so true
+        return _highScore == _currentScore;
     }
 
     private Vector2 GetPlayerPosition()
@@ -111,38 +91,14 @@ public class GameManager : Singleton<GameManager>
         }
     }
 
-    void SpawnPlayer()
+    void SpawnPlayer(int sceneIndex)
     {
+        // 1 is build order of play scene
+        if (sceneIndex != 1)
+            return;
+
         GameObject player = Instantiate(_playerPrefab, _spawnPoint.position, Quaternion.identity);
         _playerMovement = player.GetComponent<PlayerMovement>();
         _ = GetPlayerPosition();
-    }
-
-    public void ToggleUI()
-    {
-        bool panelActive = _restartUIPanel.activeSelf;
-        _restartBtn.SetActive(true);
-
-        if (!panelActive && !_playerAlive)
-        {
-            FindBestScore();
-            UpdateHighScoreText();
-            _scoreText.rectTransform.anchoredPosition = scorePosOnDeath;
-
-            _restartUIPanel.SetActive(true);
-        }
-        else if (!panelActive && _playerAlive)
-        {
-            _scoreText.rectTransform.anchoredPosition = scorePosOnDeath;
-            _restartBtn.SetActive(false);
-            _restartUIPanel.SetActive(true);
-        }
-        else if (panelActive && _playerAlive)
-        {
-            _scoreText.rectTransform.anchoredPosition = defaultScorePos;
-            _restartUIPanel.SetActive(false);
-        }
-
-
     }
 }

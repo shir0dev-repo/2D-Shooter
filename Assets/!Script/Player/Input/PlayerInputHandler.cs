@@ -40,7 +40,7 @@ public class PlayerInputHandler : MonoBehaviour
         //Create new "instance" or "copy" of ActionsAsset
         _playerActionsAsset = new PlayerInputActionsAsset();
 
-        
+
 
         //Get reference to specific action from the NAME IN ACTION ASSET IN UNITY
         _jumpAction = _playerActionsAsset.FindAction(_JUMP_ACTION_NAME);
@@ -53,7 +53,7 @@ public class PlayerInputHandler : MonoBehaviour
     private void EnableInput() => _playerActionsAsset.Enable();
     private void DisableInput() => _playerActionsAsset.Disable();
 
-    private void OnEnable() 
+    private void OnEnable()
     {
         GameManager.OnPlayerDeath += DisableInput;
         _pauseAction.started += PauseGame;
@@ -76,7 +76,7 @@ public class PlayerInputHandler : MonoBehaviour
     void PauseGame(InputAction.CallbackContext ctx)
     {
         _isPaused = !_isPaused;
-        if  (_isPaused)
+        if (_isPaused)
         {
             Cursor.visible = true;
             Time.timeScale = 0;
@@ -87,6 +87,6 @@ public class PlayerInputHandler : MonoBehaviour
             Time.timeScale = 1;
         }
 
-        GameManager.Instance.ToggleUI();
+        MainManager.Instance.UIManager.ToggleUI();
     }
 }

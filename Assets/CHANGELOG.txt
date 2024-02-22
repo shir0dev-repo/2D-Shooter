@@ -1,5 +1,0 @@
-CHANGELOG
-
-DECEMBER 6, 2023
-- Created abstract Singleton class to be inherited by any and all classes that need only 1 instance
-- 

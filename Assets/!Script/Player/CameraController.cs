@@ -24,10 +24,10 @@ public class CameraController : Singleton<CameraController>
         Cursor.visible = false;
         //Cursor.lockState = CursorLockMode.Confined;
     }
-    
+
     private void Update()
     {
-        transform.position = new Vector3(GameManager.Instance.PlayerPosition.x, 3.5f, -10);
+        transform.position = new Vector3(MainManager.Instance.GameManager.PlayerPosition.x, 3.5f, -10);
     }
 
     private void FixedUpdate()

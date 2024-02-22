@@ -44,7 +44,7 @@ public class EnemyShooter : MonoBehaviour
 
         if (_cooldownRemaining <= 0f)
         {
-            Shoot(GameManager.Instance.PlayerPosition);
+            Shoot(MainManager.Instance.GameManager.PlayerPosition);
             _cooldownRemaining = _attackCooldown;
         }
     }

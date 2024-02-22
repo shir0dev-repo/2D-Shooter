@@ -8,7 +8,7 @@ using UnityEngine;
 ///         The &lt;T&gt; signifies a generic (which can be named anything, typically denoted as T).<br></br>
 ///         Breaking the class signature into parts, we have the following:
 ///     </para>
-///     
+///
 ///     <list>
 ///         <item>
 ///             <term>
@@ -24,7 +24,7 @@ using UnityEngine;
 ///                 <typeparamref name="Generics"/> (&lt;<typeparamref name="T"/>&gt;)<br></br>
 ///             </term>
 ///             <description>
-///                  Generic classes are a way to generalize code functionality. The &lt;T&gt; specifies that when creating it, 
+///                  Generic classes are a way to generalize code functionality. The &lt;T&gt; specifies that when creating it,
 ///                  we need to pass in an argument to it. T doesn't HAVE to be named T, and could be named numerous things, like TKey and TValue, in the case
 ///                  of Dictionaries. By default, T's actual value can be ANYTHING. This can pose an issue, and is where Type Constraints come into play.<br></br>
 ///             </description>
@@ -42,14 +42,14 @@ using UnityEngine;
 ///             </description>
 ///         </item>
 ///     </list>
-///     
+///
 ///<example>
 ///<code>
 ///public abstract class EnemyManager&lt;T&gt; : MonoBehaviour where T : EnemyData
 ///</code>
 ///</example>
 /// </summary>
-/// 
+///
 /// <remarks>T is ANY MonoBehaviour. This class MUST be inherited from and cannot be added as a component directly.</remarks>
 /// <typeparam name="T">T is ANY MonoBehaviour.</typeparam>
 #endregion
@@ -69,5 +69,14 @@ public abstract class Singleton<T> : MonoBehaviour where T : MonoBehaviour
     {
         Instance = null;
         Destroy(gameObject);
+    }
+}
+
+public abstract class PersistentSingleton<T> : Singleton<T> where T : MonoBehaviour
+{
+    protected override void Awake()
+    {
+        base.Awake();
+        DontDestroyOnLoad(gameObject);
     }
 }

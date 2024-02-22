@@ -34,7 +34,7 @@ public class EnemySpawner : Singleton<EnemySpawner>, IRestartable
 
     private Vector3 GetSpawnPosition()
     {
-        float xPos = GameManager.Instance.PlayerPosition.x;
+        float xPos = MainManager.Instance.GameManager.PlayerPosition.x;
         xPos += Camera.main.orthographicSize + Random.Range(10, 20f);
         Vector3 spawnPos;
 
@@ -57,7 +57,7 @@ public class EnemySpawner : Singleton<EnemySpawner>, IRestartable
     }
     void SpawnEnemy()
     {
-        if (!GameManager.Instance.PlayerAlive || _spawnedEnemies.Count > 0) return;
+        if (!MainManager.Instance.GameManager.PlayerAlive || _spawnedEnemies.Count > 0) return;
 
         Vector3 spawnPos = GetSpawnPosition();
 
@@ -66,9 +66,9 @@ public class EnemySpawner : Singleton<EnemySpawner>, IRestartable
 
     public GameObject SpawnEnemy(GameObject enemy, float xPosition)
     {
-        if (!GameManager.Instance.PlayerAlive) return null;
+        if (!MainManager.Instance.GameManager.PlayerAlive) return null;
         Vector3 spawnPos;
-        
+
         try //"if" code here doesn't work/throws error, "catch" the error (as an else statement)
         {
             RaycastHit2D groundSpawnCast = Physics2D.Raycast(new(xPosition, 15f), Vector2.down, Mathf.Infinity, 1 << LayerMask.NameToLayer("Ground"));
@@ -99,9 +99,9 @@ public class EnemySpawner : Singleton<EnemySpawner>, IRestartable
 
     IEnumerator SpawnObstacleCoroutine()
     {
-        while (GameManager.Instance.PlayerAlive)
+        while (MainManager.Instance.GameManager.PlayerAlive)
         {
-            if (GameManager.Instance == null || !GameManager.Instance.PlayerAlive) yield break;
+            if (MainManager.Instance.GameManager == null || !MainManager.Instance.GameManager.PlayerAlive) yield break;
 
             SpawnEnemy(_obstaclePrefab, GetSpawnPosition().x);
 
@@ -115,7 +115,7 @@ public class EnemySpawner : Singleton<EnemySpawner>, IRestartable
 
 
 /*
- 
+
 Actions are a LIST of functions ADDED to a single event.
 when saying myEvent += myFunction, you're ADDING the function to the list of events to invoke.
 when saying myEvent -= myFunction, youre REMOVING the function from the list of events to invoke.

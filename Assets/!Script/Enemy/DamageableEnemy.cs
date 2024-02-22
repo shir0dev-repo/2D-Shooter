@@ -20,8 +20,8 @@ public class DamageableEnemy : Damageable
 
         if (_spawnNewOnDeath)
             EnemySpawner.OnEnemyKilled?.Invoke();
-        
-        GameManager.Instance.OnScoreIncremented?.Invoke(_pointsWorth);
+
+        MainManager.Instance.GameManager.OnScoreIncremented?.Invoke(_pointsWorth);
         Destroy(gameObject);
     }
 
