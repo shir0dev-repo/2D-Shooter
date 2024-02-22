@@ -14,8 +14,19 @@ public class UIManager : MonoBehaviour
   [Space]
   [SerializeField] GameObject _restartUIPanel;
   [SerializeField] GameObject _restartBtn;
+
+  private void Awake()
+  {
+    UpdateScoreText(0);
+  }
+
   public void UpdateScoreText(int currentScore) => _scoreText.text = SCORE_PREFIX + currentScore.ToString();
   public void UpdateHighScoreText(int newHighScore) => _highScoreText.text = HIGH_SCORE_PREFIX + newHighScore.ToString();
+
+  private void InitUI()
+  {
+    // set all ui elements inactive
+  }
 
   public void ToggleUI()
   {
