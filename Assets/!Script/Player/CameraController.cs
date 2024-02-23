@@ -1,10 +1,10 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class CameraController : Singleton<CameraController>
 {
-    [SerializeField] private RectTransform _crosshairRect;
+    [SerializeField] private Transform _crosshair;
+    [SerializeField] private Canvas _canvas;
     private Vector3 _startCameraPos = new Vector3(0, 0, -10);
     private Vector2 _cameraWorldSize;
     private Vector2 _worldToPixelSize;
@@ -35,17 +35,25 @@ public class CameraController : Singleton<CameraController>
 
     private void Update()
     {
+        if (_camera == null)
+            return;
+
         if (MainManager.Instance.SceneHandler.CurrentSceneIndex == 1)
             _camera.transform.position = new Vector3(MainManager.Instance.GameManager.PlayerPosition.x, 3.5f, -10);
         else if (_camera.transform.position != _startCameraPos)
             _camera.transform.position = _startCameraPos;
+
+
     }
 
     private void FixedUpdate()
     {
+        if (_camera == null)
+            return;
+
         Vector3 mousePos = Input.mousePosition;
-        mousePos.z = 0;
-        _crosshairRect.position = PixelToWorldPoint(mousePos);
+        mousePos.z = -_camera.transform.position.z;
+        _crosshair.position = _camera.ScreenToWorldPoint(mousePos);
     }
 
     public Vector2 GetOffScreenPosition()
@@ -58,8 +66,8 @@ public class CameraController : Singleton<CameraController>
     {
         Vector2 position;
 
-        position.x = ((pixelPosition.x / _worldToPixelSize.x) - (_cameraWorldSize.x / 2f)) + transform.position.x;
-        position.y = ((pixelPosition.y / _worldToPixelSize.y) - (_cameraWorldSize.y / 2f)) + transform.position.y;
+        position.x = ((pixelPosition.x / _worldToPixelSize.x) - (_cameraWorldSize.x / 2f)) + _camera.transform.position.x;
+        position.y = ((pixelPosition.y / _worldToPixelSize.y) - (_cameraWorldSize.y / 2f)) + _camera.transform.position.y;
 
         return position;
     }
@@ -68,7 +76,7 @@ public class CameraController : Singleton<CameraController>
     {
         _camera = Camera.main;
         _camera.transform.position = _startCameraPos;
-        _crosshairRect.gameObject.SetActive(currentSceneIndex == 1);
+        _crosshair.gameObject.SetActive(currentSceneIndex == 1);
         Cursor.visible = currentSceneIndex != 1;
 
         Debug.Log("Some comment");
@@ -76,7 +84,7 @@ public class CameraController : Singleton<CameraController>
 
     public IEnumerator CursorExpandCoroutine(float speed = 12f, float apexScale = 7, float animDuration = 0.2f)
     {
-        _crosshairRect.localScale = Vector3.one;
+        _crosshair.localScale = Vector3.one;
 
         float timeElapsed = 0;
         float scale;
@@ -84,7 +92,7 @@ public class CameraController : Singleton<CameraController>
         {
             timeElapsed += speed * Time.deltaTime;
             scale = 1 + timeElapsed / animDuration * (apexScale - 1) / apexScale;
-            _crosshairRect.localScale = Vector2.one * scale;
+            _crosshair.localScale = Vector2.one * scale;
 
             yield return new WaitForEndOfFrame();
         }
@@ -96,7 +104,7 @@ public class CameraController : Singleton<CameraController>
         {
             timeElapsed -= Time.deltaTime;
             scale = 1 + (timeElapsed / animDuration * apexScale) / apexScale;
-            _crosshairRect.localScale = Vector2.one * scale;
+            _crosshair.localScale = Vector2.one * scale;
 
             yield return new WaitForEndOfFrame();
         }
