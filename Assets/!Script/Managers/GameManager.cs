@@ -11,7 +11,6 @@ public class GameManager : MonoBehaviour
     [SerializeField] private GameObject _playerPrefab;
     [SerializeField] Transform _spawnPoint;
 
-    private bool _playerAlive = false;
     private int _currentScore = 0;
     private int _highScore = 0;
 
@@ -19,29 +18,26 @@ public class GameManager : MonoBehaviour
     private PlayerMovement _playerMovement;
 
     public Vector3 PlayerPosition => GetPlayerPosition();
-    public bool PlayerAlive => _playerAlive;
 
     private void OnEnable()
     {
         SceneHandler.OnSceneLoaded += SpawnPlayer;
 
-        OnGameRestart += ResetScore;
+        OnGameRestart += ResetGameState;
         OnScoreIncremented += IncrementScore;
         OnPlayerDeath += KillPlayer;
-
-        _playerAlive = true;
     }
 
     private void OnDisable()
     {
         SceneHandler.OnSceneLoaded -= SpawnPlayer;
 
-        OnGameRestart -= ResetScore;
+        OnGameRestart -= ResetGameState;
         OnScoreIncremented -= IncrementScore;
         OnPlayerDeath -= KillPlayer;
     }
 
-    void ResetScore()
+    void ResetGameState()
     {
         _currentScore = 0;
         MainManager.Instance.UIManager.UpdateScoreText(0);
@@ -68,13 +64,11 @@ public class GameManager : MonoBehaviour
         {
             _ = _lastStoredPosition = _playerMovement.transform.position;
 
-            _playerAlive = true;
             return _playerMovement.transform.position;
         }
 
         else
         {
-            _playerAlive = false;
             return _lastStoredPosition;
         }
     }
@@ -86,14 +80,12 @@ public class GameManager : MonoBehaviour
             return;
 
         _playerMovement = Instantiate(_playerPrefab, _spawnPoint.position, Quaternion.identity).GetComponent<PlayerMovement>();
-        //_ = GetPlayerPosition();
+        _ = GetPlayerPosition();
     }
 
     void KillPlayer()
     {
-        _playerAlive = false;
         if (NewHighScore())
             MainManager.Instance.UIManager.UpdateHighScoreText(_highScore);
-        MainManager.Instance.UIManager.ToggleUI();
     }
 }

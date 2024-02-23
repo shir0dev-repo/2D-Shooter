@@ -8,7 +8,7 @@ public class EnemySpawner : Singleton<EnemySpawner>, IRestartable
 {
     [SerializeField] private GameObject _enemyPrefab;
     [SerializeField] private GameObject _obstaclePrefab;
-    [SerializeField] private static List<GameObject> _spawnedEnemies = new();
+    [SerializeField] private List<GameObject> _spawnedEnemies = new();
     public static Action OnEnemyKilled { get; private set; }
 
 
@@ -57,7 +57,7 @@ public class EnemySpawner : Singleton<EnemySpawner>, IRestartable
     }
     void SpawnEnemy()
     {
-        if (!MainManager.Instance.GameManager.PlayerAlive || _spawnedEnemies.Count > 0) return;
+        if (_spawnedEnemies.Count > 0) return;
 
         Vector3 spawnPos = GetSpawnPosition();
 
@@ -66,7 +66,6 @@ public class EnemySpawner : Singleton<EnemySpawner>, IRestartable
 
     public GameObject SpawnEnemy(GameObject enemy, float xPosition)
     {
-        if (!MainManager.Instance.GameManager.PlayerAlive) return null;
         Vector3 spawnPos;
 
         try //"if" code here doesn't work/throws error, "catch" the error (as an else statement)
@@ -91,6 +90,7 @@ public class EnemySpawner : Singleton<EnemySpawner>, IRestartable
 
     public void Restart()
     {
+        Debug.Log("im restarting");
         _spawnedEnemies.Clear();
         SpawnEnemy();
         StopAllCoroutines();
@@ -99,16 +99,13 @@ public class EnemySpawner : Singleton<EnemySpawner>, IRestartable
 
     IEnumerator SpawnObstacleCoroutine()
     {
-        while (MainManager.Instance.GameManager.PlayerAlive)
+        while (true)
         {
-            if (MainManager.Instance.GameManager == null || !MainManager.Instance.GameManager.PlayerAlive) yield break;
-
             SpawnEnemy(_obstaclePrefab, GetSpawnPosition().x);
 
             int waitTime = Random.Range(5, 12);
             yield return new WaitForSeconds(waitTime);
         }
-        yield return null;
     }
 }
 

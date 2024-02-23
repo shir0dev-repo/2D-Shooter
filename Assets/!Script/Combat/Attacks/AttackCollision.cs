@@ -24,7 +24,7 @@ public class AttackCollision : Attack
 
         if (_readyToDestroy)
         {
-            float xCutoff = CameraController.Instance.GetOffScreenPosition().x;
+            float xCutoff = CameraController.GetOffScreenPosition().x;
 
             if (transform.position.x < xCutoff)
             {

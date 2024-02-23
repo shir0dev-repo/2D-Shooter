@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 #region XML Summary
 /// <summary>
@@ -63,6 +64,7 @@ public abstract class Singleton<T> : MonoBehaviour where T : MonoBehaviour
 
 
         Instance = this as T;
+        SceneManager.sceneLoaded += (_, _) => { Instance = this as T; };
     }
 
     protected virtual void OnApplicationQuit()

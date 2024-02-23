@@ -87,6 +87,6 @@ public class PlayerInputHandler : MonoBehaviour
             Time.timeScale = 1;
         }
 
-        MainManager.Instance.UIManager.ToggleUI();
+        MainManager.Instance.UIManager.TogglePauseMenu();
     }
 }

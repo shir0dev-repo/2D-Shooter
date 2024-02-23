@@ -14,7 +14,6 @@ public class AudioManager : MonoBehaviour
     {
         _sfxSource = gameObject.AddComponent<AudioSource>();
         _sfxSource.volume = _masterVolume * _sfxVolume;
-        _sfxSource.clip = null;
         _sfxSource.playOnAwake = false;
         _sfxSource.loop = false;
 
@@ -44,7 +43,7 @@ public class AudioManager : MonoBehaviour
     public void SetMasterVolume(float value)
     {
         _masterVolume = value;
-        
+
         _sfxSource.volume = _masterVolume * _sfxVolume;
         _musicSource.volume = _masterVolume * _musicVolume;
 

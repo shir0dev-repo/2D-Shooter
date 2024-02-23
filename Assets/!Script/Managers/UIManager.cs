@@ -6,14 +6,13 @@ public class UIManager : MonoBehaviour
   private const string SCORE_PREFIX = "Score: ";
   private const string HIGH_SCORE_PREFIX = "Best: ";
 
-  private static Vector2Int scorePosOnDeath = new Vector2Int(-150, 125);
-  private static Vector2Int defaultScorePos = new Vector2Int(-512, 365);
-
-  [SerializeField] TextMeshProUGUI _scoreText;
+  [SerializeField] TextMeshProUGUI _dynamicScoreText;
+  [SerializeField] TextMeshProUGUI _staticScoreText;
   [SerializeField] TextMeshProUGUI _highScoreText;
   [Space]
-  [SerializeField] GameObject _restartUIPanel;
-  [SerializeField] GameObject _restartBtn;
+  [SerializeField] GameObject _startPanel;
+  [SerializeField] GameObject _pausePanel;
+  [SerializeField] GameObject _gameOverPanel;
 
   private void Awake()
   {
@@ -22,51 +21,59 @@ public class UIManager : MonoBehaviour
 
   private void OnEnable()
   {
-    SceneHandler.OnSceneLoaded += SetCanvasCamera;
+    SceneHandler.OnSceneLoaded += UpdateUI;
   }
 
   private void OnDisable()
   {
-    SceneHandler.OnSceneLoaded -= SetCanvasCamera;
+    SceneHandler.OnSceneLoaded -= UpdateUI;
   }
 
-  private void SetCanvasCamera(int sceneIndex)
+  private void UpdateUI(int sceneIndex)
   {
     GetComponentInChildren<Canvas>().worldCamera = Camera.main;
+
+    switch (sceneIndex)
+    {
+      case 0:
+        _dynamicScoreText.gameObject.SetActive(false);
+        _startPanel.SetActive(true);
+        _pausePanel.SetActive(false);
+        _gameOverPanel.SetActive(false);
+        break;
+      case 1:
+        _dynamicScoreText.gameObject.SetActive(true);
+        _startPanel.SetActive(false);
+        _pausePanel.SetActive(false);
+        _gameOverPanel.SetActive(false);
+        break;
+      case 2:
+        _dynamicScoreText.gameObject.SetActive(false);
+        _staticScoreText.gameObject.SetActive(true);
+        _startPanel.SetActive(false);
+        _pausePanel.SetActive(false);
+        _gameOverPanel.SetActive(true);
+        break;
+      default:
+        _startPanel.SetActive(false);
+        _pausePanel.SetActive(false);
+        _gameOverPanel.SetActive(true);
+        break;
+    }
   }
 
-  public void UpdateScoreText(int currentScore) => _scoreText.text = SCORE_PREFIX + currentScore.ToString();
+  public void UpdateScoreText(int currentScore)
+  {
+    _dynamicScoreText.text = SCORE_PREFIX + currentScore.ToString();
+    _staticScoreText.text = SCORE_PREFIX + currentScore.ToString();
+  }
   public void UpdateHighScoreText(int newHighScore) => _highScoreText.text = HIGH_SCORE_PREFIX + newHighScore.ToString();
 
-  private void InitUI()
+  public void TogglePauseMenu()
   {
-    // set all ui elements inactive
-  }
+    if (MainManager.Instance.SceneHandler.CurrentSceneIndex != 1)
+      return;
 
-  public void ToggleUI()
-  {
-    GameManager gm = MainManager.Instance.GameManager;
-    bool panelActive = _restartUIPanel.activeSelf;
-    _restartBtn.SetActive(true);
-
-    if (!panelActive && !gm.PlayerAlive)
-    {
-      _scoreText.rectTransform.anchoredPosition = scorePosOnDeath;
-
-      _restartUIPanel.SetActive(true);
-    }
-    else if (!panelActive && gm.PlayerAlive)
-    {
-      _scoreText.rectTransform.anchoredPosition = scorePosOnDeath;
-      _restartBtn.SetActive(false);
-      _restartUIPanel.SetActive(true);
-    }
-    else if (panelActive && gm.PlayerAlive)
-    {
-      _scoreText.rectTransform.anchoredPosition = defaultScorePos;
-      _restartUIPanel.SetActive(false);
-    }
-
-
+    _pausePanel.SetActive(!_pausePanel.activeSelf);
   }
 }

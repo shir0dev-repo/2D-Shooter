@@ -2,10 +2,12 @@ using UnityEngine;
 
 public class MainManager : PersistentSingleton<MainManager>
 {
+    private static bool _hasBeenInitialized = false;
     [SerializeField] private GameManager _gameManager;
     [SerializeField] private AudioManager _audioManager;
     [SerializeField] private UIManager _uiManager;
     [SerializeField] private SceneHandler _sceneHandler;
+    [SerializeField] private CameraController _cameraController;
 
     public GameManager GameManager
     {
@@ -33,24 +35,34 @@ public class MainManager : PersistentSingleton<MainManager>
         }
     }
 
+    public CameraController CameraController
+    {
+        get { return _cameraController; }
+    }
+
     protected override void Awake()
     {
         base.Awake();
-
         Initialize();
     }
 
     private void Initialize()
     {
+        if (_hasBeenInitialized)
+            return;
+
         _gameManager = gameObject.GetComponentInChildren<GameManager>();
         _audioManager = gameObject.GetComponentInChildren<AudioManager>();
         _uiManager = gameObject.GetComponentInChildren<UIManager>();
         _sceneHandler = gameObject.GetComponentInChildren<SceneHandler>();
+        _cameraController = gameObject.GetComponentInChildren<CameraController>();
+
+        Debug.Log(gameObject.GetInstanceID());
+        _hasBeenInitialized = true;
     }
 
     public void RestartGame()
     {
-        _sceneHandler.LoadScene(SceneHandler.CurrentSceneIndex);
         GameManager.OnGameRestart?.Invoke();
     }
 

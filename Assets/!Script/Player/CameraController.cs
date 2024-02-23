@@ -1,7 +1,7 @@
 using System.Collections;
 using UnityEngine;
 
-public class CameraController : Singleton<CameraController>
+public class CameraController : MonoBehaviour
 {
     [SerializeField] private Transform _crosshair;
     [SerializeField] private Canvas _canvas;
@@ -20,10 +20,8 @@ public class CameraController : Singleton<CameraController>
         SceneHandler.OnSceneLoaded -= InitializeCamera;
     }
 
-    protected override void Awake()
+    private void Awake()
     {
-        base.Awake();
-
         _camera = Camera.main;
         _cameraWorldSize.y = _camera.orthographicSize * 2f;
         _cameraWorldSize.x = _cameraWorldSize.y * Screen.width / Screen.height;
@@ -56,30 +54,20 @@ public class CameraController : Singleton<CameraController>
         _crosshair.position = _camera.ScreenToWorldPoint(mousePos);
     }
 
-    public Vector2 GetOffScreenPosition()
+    public static Vector2 GetOffScreenPosition()
     {
-        Vector2 offscreenPos = new Vector2(transform.position.x - _camera.orthographicSize, transform.position.x + _camera.orthographicSize); //X value stores left, Y value stores right.
+        Camera cam = Camera.main;
+        Vector2 offscreenPos = new Vector2(cam.transform.position.x - cam.orthographicSize, cam.transform.position.x + cam.orthographicSize); //X value stores left, Y value stores right.
         return offscreenPos * 2f;
-    }
-
-    private Vector2 PixelToWorldPoint(Vector2 pixelPosition)
-    {
-        Vector2 position;
-
-        position.x = ((pixelPosition.x / _worldToPixelSize.x) - (_cameraWorldSize.x / 2f)) + _camera.transform.position.x;
-        position.y = ((pixelPosition.y / _worldToPixelSize.y) - (_cameraWorldSize.y / 2f)) + _camera.transform.position.y;
-
-        return position;
     }
 
     private void InitializeCamera(int currentSceneIndex)
     {
+        _crosshair = transform.GetChild(0);
         _camera = Camera.main;
         _camera.transform.position = _startCameraPos;
         _crosshair.gameObject.SetActive(currentSceneIndex == 1);
         Cursor.visible = currentSceneIndex != 1;
-
-        Debug.Log("Some comment");
     }
 
     public IEnumerator CursorExpandCoroutine(float speed = 12f, float apexScale = 7, float animDuration = 0.2f)
