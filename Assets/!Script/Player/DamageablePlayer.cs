@@ -14,7 +14,7 @@ public class DamageablePlayer : Damageable
     {
         base.Die(); //check if health is ACTUALLY zero.
 
-        MainManager.Instance.AudioManager.PlayAudio(_deathSound);
+        MainManager.Instance.AudioManager.PlaySoundEffect(_deathSound);
 
         PlayerAnimationHandler animHandler = GetComponentInChildren<PlayerAnimationHandler>();
         if (animHandler != null)

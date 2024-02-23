@@ -37,9 +37,15 @@ public class MainManager : PersistentSingleton<MainManager>
     {
         base.Awake();
 
+        Initialize();
+    }
+
+    private void Initialize()
+    {
         _gameManager = gameObject.GetComponentInChildren<GameManager>();
         _audioManager = gameObject.GetComponentInChildren<AudioManager>();
         _uiManager = gameObject.GetComponentInChildren<UIManager>();
+        _sceneHandler = gameObject.GetComponentInChildren<SceneHandler>();
     }
 
     public void RestartGame()
