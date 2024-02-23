@@ -12,12 +12,12 @@ public class CameraController : Singleton<CameraController>
 
     private void OnEnable()
     {
-        SceneHandler.OnSceneLoaded += ToggleCrosshair;
+        SceneHandler.OnSceneLoaded += InitializeCamera;
     }
 
     private void OnDisable()
     {
-        SceneHandler.OnSceneLoaded -= ToggleCrosshair;
+        SceneHandler.OnSceneLoaded -= InitializeCamera;
     }
 
     protected override void Awake()
@@ -64,10 +64,14 @@ public class CameraController : Singleton<CameraController>
         return position;
     }
 
-    private void ToggleCrosshair(int currentSceneIndex)
+    private void InitializeCamera(int currentSceneIndex)
     {
+        _camera = Camera.main;
+        _camera.transform.position = _startCameraPos;
         _crosshairRect.gameObject.SetActive(currentSceneIndex == 1);
         Cursor.visible = currentSceneIndex != 1;
+
+        Debug.Log("Some comment");
     }
 
     public IEnumerator CursorExpandCoroutine(float speed = 12f, float apexScale = 7, float animDuration = 0.2f)
