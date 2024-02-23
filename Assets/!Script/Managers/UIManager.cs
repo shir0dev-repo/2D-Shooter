@@ -20,6 +20,21 @@ public class UIManager : MonoBehaviour
     UpdateScoreText(0);
   }
 
+  private void OnEnable()
+  {
+    SceneHandler.OnSceneLoaded += SetCanvasCamera;
+  }
+
+  private void OnDisable()
+  {
+    SceneHandler.OnSceneLoaded -= SetCanvasCamera;
+  }
+
+  private void SetCanvasCamera(int sceneIndex)
+  {
+    GetComponentInChildren<Canvas>().worldCamera = Camera.main;
+  }
+
   public void UpdateScoreText(int currentScore) => _scoreText.text = SCORE_PREFIX + currentScore.ToString();
   public void UpdateHighScoreText(int newHighScore) => _highScoreText.text = HIGH_SCORE_PREFIX + newHighScore.ToString();
 
