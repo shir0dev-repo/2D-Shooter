@@ -4,31 +4,33 @@ using System.Collections.Generic;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
-public class EnemySpawner : Singleton<EnemySpawner>, IRestartable
+public class EnemySpawner : MonoBehaviour, IRestartable
 {
     [SerializeField] private GameObject _enemyPrefab;
     [SerializeField] private GameObject _obstaclePrefab;
     [SerializeField] private List<GameObject> _spawnedEnemies = new();
     public static Action OnEnemyKilled { get; private set; }
 
-
+    private bool _canSpawn = false;
 
     private void OnEnable()
     {
         OnEnemyKilled += SpawnEnemy;
+        SceneHandler.OnSceneLoaded += CanSpawnEnemy;
         (this as IRestartable).Subscribe();
     }
 
-    private void Start()
+    private void CanSpawnEnemy(int sceneIndex)
     {
-        SpawnEnemy();
-        StartCoroutine(SpawnObstacleCoroutine());
+        _canSpawn = sceneIndex == 1;
     }
 
     private void OnDisable()
     {
         OnEnemyKilled -= SpawnEnemy;
         (this as IRestartable).Unsubscribe();
+        SceneHandler.OnSceneLoaded -= CanSpawnEnemy;
+
         StopAllCoroutines();
     }
 
@@ -57,6 +59,7 @@ public class EnemySpawner : Singleton<EnemySpawner>, IRestartable
     }
     void SpawnEnemy()
     {
+        if (!_canSpawn) return;
         if (_spawnedEnemies.Count > 0) return;
 
         Vector3 spawnPos = GetSpawnPosition();
@@ -94,7 +97,9 @@ public class EnemySpawner : Singleton<EnemySpawner>, IRestartable
         _spawnedEnemies.Clear();
         SpawnEnemy();
         StopAllCoroutines();
-        StartCoroutine(SpawnObstacleCoroutine());
+
+        if (MainManager.Instance.SceneHandler.CurrentSceneIndex == 1)
+            StartCoroutine(SpawnObstacleCoroutine());
     }
 
     IEnumerator SpawnObstacleCoroutine()

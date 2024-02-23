@@ -72,6 +72,11 @@ public abstract class Singleton<T> : MonoBehaviour where T : MonoBehaviour
         Instance = null;
         Destroy(gameObject);
     }
+
+    protected virtual void OnDestroy()
+    {
+        Instance = null;
+    }
 }
 
 public abstract class PersistentSingleton<T> : Singleton<T> where T : MonoBehaviour

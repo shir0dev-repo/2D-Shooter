@@ -8,6 +8,7 @@ public class MainManager : PersistentSingleton<MainManager>
     [SerializeField] private UIManager _uiManager;
     [SerializeField] private SceneHandler _sceneHandler;
     [SerializeField] private CameraController _cameraController;
+    [SerializeField] private EnemySpawner _enemySpawner;
 
     public GameManager GameManager
     {
@@ -40,17 +41,21 @@ public class MainManager : PersistentSingleton<MainManager>
         get { return _cameraController; }
     }
 
+    public EnemySpawner EnemySpawner
+    {
+        get { return _enemySpawner; }
+    }
+
     protected override void Awake()
     {
         base.Awake();
-        Initialize();
+        Initialize(0);
+
+        SceneHandler.OnSceneLoaded += Initialize;
     }
 
-    private void Initialize()
+    private void Initialize(int _)
     {
-        if (_hasBeenInitialized)
-            return;
-
         _gameManager = gameObject.GetComponentInChildren<GameManager>();
         _audioManager = gameObject.GetComponentInChildren<AudioManager>();
         _uiManager = gameObject.GetComponentInChildren<UIManager>();
@@ -58,7 +63,6 @@ public class MainManager : PersistentSingleton<MainManager>
         _cameraController = gameObject.GetComponentInChildren<CameraController>();
 
         Debug.Log(gameObject.GetInstanceID());
-        _hasBeenInitialized = true;
     }
 
     public void RestartGame()

@@ -16,7 +16,7 @@ public class DamageableEnemy : Damageable
     {
         base.Die();
 
-        EnemySpawner.Instance.RemoveEnemy(gameObject);
+        MainManager.Instance.EnemySpawner.RemoveEnemy(gameObject);
 
         if (_spawnNewOnDeath)
             EnemySpawner.OnEnemyKilled?.Invoke();

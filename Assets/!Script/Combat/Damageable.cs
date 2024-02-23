@@ -32,7 +32,7 @@ public abstract class Damageable : MonoBehaviour, IDamageable, IRestartable
     {
         (this as IRestartable).Unsubscribe();
     }
-    
+
     protected virtual void Start()
     {
         OnHealthChanged?.Invoke(_currentHealth);
@@ -57,8 +57,6 @@ public abstract class Damageable : MonoBehaviour, IDamageable, IRestartable
             Debug.LogWarning($"{gameObject.name}'s health is not low enough to die!");
             return;
         }
-
-        _isInvulnerable = true;
     }
 
     public virtual void Restart()

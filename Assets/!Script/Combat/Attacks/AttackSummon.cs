@@ -35,7 +35,7 @@ public class AttackSummon : Attack
         //remove null minions (they died, but still exist as null references)
         _summonedMinions.RemoveAll(minion => minion == null);
 
-        GameObject minion = EnemySpawner.Instance.SpawnEnemy(_summonedPrefab, GetSummonPositionX());
+        GameObject minion = MainManager.Instance.EnemySpawner.SpawnEnemy(_summonedPrefab, GetSummonPositionX());
         _summonedMinions.Add(minion);
 
         base.HandleAttack(); //reset attack timer
@@ -50,7 +50,7 @@ public class AttackSummon : Attack
     {
         float direction = transform.TransformDirection(-Vector3.right).x * _summonPoint.x;
         float posX = transform.position.x + direction;
-        
+
         return posX;
     }
 
@@ -58,6 +58,6 @@ public class AttackSummon : Attack
     {
         Gizmos.color = Color.green;
 
-        Gizmos.DrawWireCube(new Vector3(GetSummonPositionX() + transform.position.x, transform.position.y, 0f ), transform.localScale);
+        Gizmos.DrawWireCube(new Vector3(GetSummonPositionX() + transform.position.x, transform.position.y, 0f), transform.localScale);
     }
 }

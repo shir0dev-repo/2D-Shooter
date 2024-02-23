@@ -2,15 +2,13 @@ using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class PlayerInputHandler : MonoBehaviour
+public class PlayerInputHandler : Singleton<PlayerInputHandler>
 {
     private const string _MOVE_ACTION_NAME = "Move";
     private const string _ATTACK_ACTION_NAME = "Attack";
     private const string _JUMP_ACTION_NAME = "Jump";
     private const string _PAUSE_ACTION_NAME = "Pause";
 
-    //GETtable by any script, but not SETtable.
-    public static PlayerInputHandler Instance { get; private set; }
     public InputAction MoveAction { get { return _moveAction; } }
     public InputAction JumpAction { get { return _jumpAction; } }
     public InputAction AttackAction { get { return _attackAction; } }
@@ -25,22 +23,10 @@ public class PlayerInputHandler : MonoBehaviour
 
     private static bool _isPaused = false;
 
-    private void Awake()
+    protected override void Awake()
     {
-        //Checks if a "copy" of PlayerInputHandler exists in game world, destroys THIS copy, if it does. Should ONLY be on player (ONE copy).
-        if (Instance != null)
-        {
-            Debug.LogAssertion("ONLY ONE INSTANCE OF PLAYERINPUTHANDLER ALLOWED!!!");
-            Destroy(gameObject);
-        }
-        //No copy found, make THIS instance of PlayerInputHandler the "copy."
-        else
-            Instance = this;
-
         //Create new "instance" or "copy" of ActionsAsset
         _playerActionsAsset = new PlayerInputActionsAsset();
-
-
 
         //Get reference to specific action from the NAME IN ACTION ASSET IN UNITY
         _jumpAction = _playerActionsAsset.FindAction(_JUMP_ACTION_NAME);
