@@ -2,7 +2,6 @@ using UnityEngine;
 
 public class MainManager : PersistentSingleton<MainManager>
 {
-    private static bool _hasBeenInitialized = false;
     [SerializeField] private GameManager _gameManager;
     [SerializeField] private AudioManager _audioManager;
     [SerializeField] private UIManager _uiManager;
@@ -49,20 +48,18 @@ public class MainManager : PersistentSingleton<MainManager>
     protected override void Awake()
     {
         base.Awake();
-        Initialize(0);
+        Initialize();
 
-        SceneHandler.OnSceneLoaded += Initialize;
+
     }
-
-    private void Initialize(int _)
+    private void Initialize()
     {
         _gameManager = gameObject.GetComponentInChildren<GameManager>();
         _audioManager = gameObject.GetComponentInChildren<AudioManager>();
         _uiManager = gameObject.GetComponentInChildren<UIManager>();
         _sceneHandler = gameObject.GetComponentInChildren<SceneHandler>();
         _cameraController = gameObject.GetComponentInChildren<CameraController>();
-
-        Debug.Log(gameObject.GetInstanceID());
+        _enemySpawner = gameObject.GetComponentInChildren<EnemySpawner>();
     }
 
     public void RestartGame()

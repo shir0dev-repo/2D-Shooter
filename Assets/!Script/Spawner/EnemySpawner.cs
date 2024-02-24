@@ -22,7 +22,14 @@ public class EnemySpawner : MonoBehaviour, IRestartable
 
     private void CanSpawnEnemy(int sceneIndex)
     {
+        StopAllCoroutines();
+        _spawnedEnemies.Clear();
         _canSpawn = sceneIndex == 1;
+        if (_canSpawn)
+        {
+            SpawnEnemy();
+            StartCoroutine(SpawnObstacleCoroutine());
+        }
     }
 
     private void OnDisable()
