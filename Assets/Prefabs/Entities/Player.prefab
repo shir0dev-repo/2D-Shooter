@@ -26,13 +26,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7794765286853803605}
+  serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 2427223523668923728}
-  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &2511362073851737446
 SpriteRenderer:
@@ -149,6 +149,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8659787741764618777}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: -7.3, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
@@ -157,7 +158,6 @@ Transform:
   - {fileID: 6536264721199643512}
   - {fileID: 1723959956549085155}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &5897638873587020212
 MonoBehaviour:
@@ -231,6 +231,7 @@ MonoBehaviour:
     m_Bits: 128
   _damage: 1
   _projectilePrefab: {fileID: 5707094565087259042, guid: 73eb6052ad81af24ea84061bd2229d23, type: 3}
+  _missilePrefab: {fileID: 1726714402404476107, guid: 248f659748c924147890fb486f056013, type: 3}
   _playerInputHandler: {fileID: 0}
   _attackSound: {fileID: 8300000, guid: 4a7ce1ca58588e44a87d5709d820bea7, type: 3}
 --- !u!114 &6482923135275691256

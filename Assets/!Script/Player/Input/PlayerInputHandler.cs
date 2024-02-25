@@ -8,16 +8,19 @@ public class PlayerInputHandler : Singleton<PlayerInputHandler>
     private const string _ATTACK_ACTION_NAME = "Attack";
     private const string _JUMP_ACTION_NAME = "Jump";
     private const string _PAUSE_ACTION_NAME = "Pause";
+    private const string _MISSILE_ACTION_NAME = "Missile";
 
     public InputAction MoveAction { get { return _moveAction; } }
     public InputAction JumpAction { get { return _jumpAction; } }
     public InputAction AttackAction { get { return _attackAction; } }
     public InputAction PauseAction { get { return _pauseAction; } }
+    public InputAction MissileAction { get { return _missileAction; } }
 
     private InputAction _moveAction;
     private InputAction _jumpAction;
     private InputAction _attackAction;
     private InputAction _pauseAction;
+    private InputAction _missileAction;
 
     private PlayerInputActionsAsset _playerActionsAsset;
 
@@ -33,6 +36,7 @@ public class PlayerInputHandler : Singleton<PlayerInputHandler>
         _moveAction = _playerActionsAsset.FindAction(_MOVE_ACTION_NAME);
         _attackAction = _playerActionsAsset.FindAction(_ATTACK_ACTION_NAME);
         _pauseAction = _playerActionsAsset.FindAction(_PAUSE_ACTION_NAME);
+        _missileAction = _playerActionsAsset.FindAction(_MISSILE_ACTION_NAME);
     }
 
 

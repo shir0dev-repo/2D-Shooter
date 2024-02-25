@@ -13,6 +13,7 @@ public class DamageablePlayer : Damageable
     public void Heal(int healAmount)
     {
         _currentHealth = Mathf.Clamp(_currentHealth + healAmount, 0, _maxHealth);
+        OnHealthChanged?.Invoke(_currentHealth);
     }
     public override void Die()
     {

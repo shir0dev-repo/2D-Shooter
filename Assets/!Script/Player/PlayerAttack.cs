@@ -1,9 +1,11 @@
+using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 public class PlayerAttack : Attack
 {
     [SerializeField] private GameObject _projectilePrefab;
+    [SerializeField] private GameObject _missilePrefab;
     [SerializeField] private PlayerInputHandler _playerInputHandler;
     [SerializeField] private AudioClip _attackSound;
 
@@ -17,11 +19,18 @@ public class PlayerAttack : Attack
     {
 
         _playerInputHandler.AttackAction.started += RegisterInput;
+        _playerInputHandler.MissileAction.started += SpawnMissile;
+    }
+
+    private void SpawnMissile(InputAction.CallbackContext context)
+    {
+        Instantiate (_missilePrefab, transform.position, Quaternion.identity);
     }
 
     private void OnDisable()
     {
         _playerInputHandler.AttackAction.started -= RegisterInput;
+        _playerInputHandler.MissileAction.started -= SpawnMissile;
     }
 
     private void RegisterInput(InputAction.CallbackContext context)

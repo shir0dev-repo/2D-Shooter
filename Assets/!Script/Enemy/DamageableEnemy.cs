@@ -13,7 +13,7 @@ public class DamageableEnemy : Damageable
 
     public override void Die()
     {
-        base.Die();
+        //base.Die();
 
         MainManager.Instance.EnemySpawner.RemoveEnemy(gameObject);
 
