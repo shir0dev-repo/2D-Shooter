@@ -319,7 +319,7 @@ MonoBehaviour:
   _missilePrefab: {fileID: 1726714402404476107, guid: 248f659748c924147890fb486f056013, type: 3}
   _playerInputHandler: {fileID: 0}
   _attackSound: {fileID: 8300000, guid: 4a7ce1ca58588e44a87d5709d820bea7, type: 3}
-  _missileText: {fileID: 0}
+  _missileSprite: {fileID: 1144558718838967616}
 --- !u!114 &6482923135275691256
 MonoBehaviour:
   m_ObjectHideFlags: 0

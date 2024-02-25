@@ -32,7 +32,7 @@ public class DamageableEnemy : Damageable
             if (!go.TryGetComponent(out Pickup pickup))
                 continue;
             if (Random.value > pickup.SpawnChance)
-                return;
+                continue;
 
             Instantiate(go, transform.position, Quaternion.identity);
             break;

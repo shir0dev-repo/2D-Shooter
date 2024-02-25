@@ -13,10 +13,14 @@ public class PlayerAttack : Attack
 
     private bool _hasMissile = false;
 
+    public bool HasMissile => _hasMissile;
+
     private void Awake()
     {
         if (_playerInputHandler == null)
             _playerInputHandler = GetComponent<PlayerInputHandler>();
+
+        _missileSprite.SetActive(false);
     }
 
     private void Start()

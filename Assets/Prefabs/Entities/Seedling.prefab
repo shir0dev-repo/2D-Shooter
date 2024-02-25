@@ -179,6 +179,7 @@ MonoBehaviour:
   _pointsWorth: 50
   _pickups:
   - {fileID: 4335947819108467702, guid: d4ded9fdbe52de14780bd4cea63016e6, type: 3}
+  - {fileID: 4061361598021860398, guid: 12ac2a98cd5e6044b81e7379c8462a11, type: 3}
 --- !u!50 &5658506817584312711
 Rigidbody2D:
   serializedVersion: 4

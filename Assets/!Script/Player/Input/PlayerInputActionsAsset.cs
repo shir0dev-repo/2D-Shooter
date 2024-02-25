@@ -143,7 +143,7 @@ public partial class @PlayerInputActionsAsset: IInputActionCollection2, IDisposa
                 {
                     ""name"": """",
                     ""id"": ""be1a6e84-04d8-4689-9b79-abae1e845e2d"",
-                    ""path"": ""<Keyboard>/leftShift"",
+                    ""path"": ""<Keyboard>/e"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
