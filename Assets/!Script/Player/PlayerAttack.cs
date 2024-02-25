@@ -10,7 +10,7 @@ public class PlayerAttack : Attack
     [SerializeField] private PlayerInputHandler _playerInputHandler;
     [SerializeField] private AudioClip _attackSound;
     [SerializeField] private GameObject _missileSprite;
-
+    [SerializeField] private AudioClip _meyow;
     private bool _hasMissile = false;
 
     public bool HasMissile => _hasMissile;
@@ -39,6 +39,8 @@ public class PlayerAttack : Attack
     private void SpawnMissile(InputAction.CallbackContext context)
     {
         if (!_hasMissile) return;
+
+        MainManager.Instance.AudioManager.PlaySoundEffect(_meyow);
 
         Instantiate(_missilePrefab, transform.position, Quaternion.identity);
 

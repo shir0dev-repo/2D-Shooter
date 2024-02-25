@@ -320,6 +320,7 @@ MonoBehaviour:
   _playerInputHandler: {fileID: 0}
   _attackSound: {fileID: 8300000, guid: 4a7ce1ca58588e44a87d5709d820bea7, type: 3}
   _missileSprite: {fileID: 1144558718838967616}
+  _meyow: {fileID: 8300000, guid: 08aa64629c2f91d4882701e498fc079f, type: 3}
 --- !u!114 &6482923135275691256
 MonoBehaviour:
   m_ObjectHideFlags: 0

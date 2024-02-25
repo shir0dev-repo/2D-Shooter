@@ -1,8 +1,15 @@
 using System;
+using System.IO;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
+    [Serializable]
+    private class SaveData
+    {
+        public int SavedScore;
+    }
+
     public static Action OnPlayerDeath;
     public static Action OnGameRestart;
 
@@ -26,6 +33,12 @@ public class GameManager : MonoBehaviour
         OnGameRestart += ResetGameState;
         OnScoreIncremented += IncrementScore;
         OnPlayerDeath += KillPlayer;
+        OnPlayerDeath += SaveGame;
+    }
+
+    private void Awake()
+    {
+        LoadGame();
     }
 
     private void OnDisable()
@@ -35,6 +48,7 @@ public class GameManager : MonoBehaviour
         OnGameRestart -= ResetGameState;
         OnScoreIncremented -= IncrementScore;
         OnPlayerDeath -= KillPlayer;
+        OnPlayerDeath -= SaveGame;
     }
 
     void ResetGameState()
@@ -87,5 +101,43 @@ public class GameManager : MonoBehaviour
     {
         if (NewHighScore())
             MainManager.Instance.UIManager.UpdateHighScoreText(_highScore);
+    }
+
+    public void SaveGame()
+    {
+        SaveData data = new()
+        {
+            SavedScore = _highScore
+        };
+
+        string filePath = Application.persistentDataPath + "/savedScore.json";
+        string json = JsonUtility.ToJson(data, true);
+
+        Debug.Log(filePath);
+
+        if (File.Exists(filePath))
+        {
+            int previouslySavedScore = JsonUtility.FromJson<SaveData>(File.ReadAllText(filePath)).SavedScore;
+            if (_highScore > previouslySavedScore)
+            {
+                File.WriteAllText(filePath, json);
+            }
+        }
+        else
+        {
+            File.WriteAllText(filePath, json);
+        }
+    }
+
+    public void LoadGame()
+    {
+        string filePath = Application.persistentDataPath + "/savedScore.json";
+
+        if (!File.Exists(filePath)) return;
+
+        int loadedScore = JsonUtility.FromJson<SaveData>(File.ReadAllText(filePath)).SavedScore;
+
+        _highScore = Mathf.Max(loadedScore, _highScore);
+        MainManager.Instance.UIManager.UpdateHighScoreText(_highScore);
     }
 }
