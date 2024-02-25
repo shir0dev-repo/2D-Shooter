@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -6,7 +5,7 @@ public class DamageableEnemy : Damageable
 {
     [SerializeField] private bool _spawnNewOnDeath = false;
     [SerializeField] int _pointsWorth;
-
+    [SerializeField] private List<GameObject> _pickups;
     public override void TakeDamage(int damageAmount)
     {
         base.TakeDamage(damageAmount);
@@ -22,7 +21,22 @@ public class DamageableEnemy : Damageable
             EnemySpawner.OnEnemyKilled?.Invoke();
 
         MainManager.Instance.GameManager.OnScoreIncremented?.Invoke(_pointsWorth);
+        TryDropPickup();
         Destroy(gameObject);
+    }
+
+    private void TryDropPickup()
+    {
+        foreach (GameObject go in _pickups)
+        {
+            if (!go.TryGetComponent(out Pickup pickup))
+                continue;
+            if (Random.value > pickup.SpawnChance)
+                return;
+
+            Instantiate(go, transform.position, Quaternion.identity);
+            break;
+        }
     }
 
     public override void Restart()

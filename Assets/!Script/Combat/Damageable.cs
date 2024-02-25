@@ -50,6 +50,7 @@ public abstract class Damageable : MonoBehaviour, IDamageable, IRestartable
             Die();
         }
     }
+
     public virtual void Die()
     {
         if (_currentHealth > 0)

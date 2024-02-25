@@ -10,6 +10,10 @@ public class DamageablePlayer : Damageable
         base.TakeDamage(damageAmount);
         StartCoroutine(InvulnerabilityFramesCoroutine());
     }
+    public void Heal(int healAmount)
+    {
+        _currentHealth = Mathf.Clamp(_currentHealth + healAmount, 0, _maxHealth);
+    }
     public override void Die()
     {
         base.Die(); //check if health is ACTUALLY zero.

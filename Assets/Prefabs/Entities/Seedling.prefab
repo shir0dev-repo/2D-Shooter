@@ -25,13 +25,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5678329718872579725}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 4336311443104636329}
-  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &7377420253593883936
 SpriteRenderer:
@@ -134,6 +134,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7575621049681930694}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
@@ -141,7 +142,6 @@ Transform:
   m_Children:
   - {fileID: 68608957995970407}
   m_Father: {fileID: 0}
-  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &7226241804578954595
 MonoBehaviour:
@@ -177,6 +177,8 @@ MonoBehaviour:
   _maxHealth: 1
   _spawnNewOnDeath: 0
   _pointsWorth: 50
+  _pickups:
+  - {fileID: 4335947819108467702, guid: d4ded9fdbe52de14780bd4cea63016e6, type: 3}
 --- !u!50 &5658506817584312711
 Rigidbody2D:
   serializedVersion: 4
