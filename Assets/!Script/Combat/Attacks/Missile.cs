@@ -65,11 +65,4 @@ public class Missile : MonoBehaviour
         }
         Destroy(gameObject);
     }
-    private void OnDrawGizmos()
-    {
-        float explosionRadius = _camera.orthographicSize * 2f * Screen.width / Screen.height;
-
-        Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(transform.position, explosionRadius);
-    }
 }
