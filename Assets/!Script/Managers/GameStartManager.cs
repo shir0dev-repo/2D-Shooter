@@ -6,7 +6,6 @@ using UnityEngine;
 public class GameStartManager : Singleton<GameStartManager>
 {
     [SerializeField] private GameObject _mainManagerPrefab;
-    [SerializeField] private ParticleSystem _notePS;
     protected override void Awake()
     {
         base.Awake();
