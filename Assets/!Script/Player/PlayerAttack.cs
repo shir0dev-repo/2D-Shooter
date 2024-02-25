@@ -1,4 +1,5 @@
 using System;
+using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -8,6 +9,9 @@ public class PlayerAttack : Attack
     [SerializeField] private GameObject _missilePrefab;
     [SerializeField] private PlayerInputHandler _playerInputHandler;
     [SerializeField] private AudioClip _attackSound;
+    [SerializeField] private GameObject _missileSprite;
+
+    private bool _hasMissile = false;
 
     private void Awake()
     {
@@ -22,9 +26,20 @@ public class PlayerAttack : Attack
         _playerInputHandler.MissileAction.started += SpawnMissile;
     }
 
+    public void AddMissile()
+    {
+        _hasMissile = true;
+        _missileSprite.SetActive(true);
+    }
+
     private void SpawnMissile(InputAction.CallbackContext context)
     {
-        Instantiate (_missilePrefab, transform.position, Quaternion.identity);
+        if (!_hasMissile) return;
+
+        Instantiate(_missilePrefab, transform.position, Quaternion.identity);
+
+        _hasMissile = false;
+        _missileSprite.SetActive(false);
     }
 
     private void OnDisable()
