@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: b3792d7aebe12b442808a7b50d714284
+guid: 354e05257ebe2da409cc564625d81936
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -48,7 +48,7 @@ TextureImporter:
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 75
+  spritePixelsToUnits: 100
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -136,13 +136,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: play-btn_0
+      name: tree-logo_0
       rect:
         serializedVersion: 2
         x: 0
-        y: 32
-        width: 80
-        height: 16
+        y: 160
+        width: 160
+        height: 160
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -150,41 +150,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 76a7c3b4166517a4d9a6ce962351f3a0
-      internalID: 528248305
+      spriteID: dcbe37861b612534985ce0cdb46073bb
+      internalID: 828649206
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: play-btn_1
-      rect:
-        serializedVersion: 2
-        x: 0
-        y: 16
-        width: 80
-        height: 16
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: f14a122d0e524a040b61fb7ea7413242
-      internalID: -1929403711
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: play-btn_2
+      name: tree-logo_1
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 80
-        height: 16
+        width: 160
+        height: 160
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -192,8 +171,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 5925c6b004ebece48994228bac6a12ad
-      internalID: 858044939
+      spriteID: c9bbf19461f5d0a4ca049d1dc8279032
+      internalID: -2047349238
       vertices: []
       indices: 
       edges: []
@@ -209,9 +188,8 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      play-btn_0: 528248305
-      play-btn_1: -1929403711
-      play-btn_2: 858044939
+      tree-logo_0: 828649206
+      tree-logo_1: -2047349238
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

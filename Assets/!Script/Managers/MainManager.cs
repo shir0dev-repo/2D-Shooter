@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class MainManager : PersistentSingleton<MainManager>
@@ -45,13 +46,22 @@ public class MainManager : PersistentSingleton<MainManager>
         get { return _enemySpawner; }
     }
 
+    private void OnEnable()
+    {
+        SceneHandler.OnSceneLoaded += ResetPauseState;
+    }
+
     protected override void Awake()
     {
         base.Awake();
         Initialize();
-
-
     }
+
+    private void OnDisable()
+    {
+        SceneHandler.OnSceneLoaded -= ResetPauseState;
+    }
+
     private void Initialize()
     {
         _gameManager = gameObject.GetComponentInChildren<GameManager>();
@@ -65,6 +75,25 @@ public class MainManager : PersistentSingleton<MainManager>
     public void RestartGame()
     {
         GameManager.OnGameRestart?.Invoke();
+    }
+
+    public void PauseGame()
+    {
+        bool currentlyPaused = Time.timeScale < 1f;
+
+        _uiManager.TogglePauseMenu(currentlyPaused);
+
+        // unpause game
+        if (currentlyPaused)
+            Time.timeScale = 1.0f;
+        else
+            Time.timeScale = 0.0f;
+    }
+
+
+    private void ResetPauseState(int sceneIndex)
+    {
+        Time.timeScale = 1.0f;
     }
 
     public void QuitGame()

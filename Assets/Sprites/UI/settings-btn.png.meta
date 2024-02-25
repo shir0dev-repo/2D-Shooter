@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: b3792d7aebe12b442808a7b50d714284
+guid: a812323ecb3ab6040bdc6b973d7cb0b7
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -136,12 +136,12 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: play-btn_0
+      name: settings-btn_0
       rect:
         serializedVersion: 2
         x: 0
         y: 32
-        width: 80
+        width: 144
         height: 16
       alignment: 0
       pivot: {x: 0, y: 0}
@@ -150,19 +150,19 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 76a7c3b4166517a4d9a6ce962351f3a0
-      internalID: 528248305
+      spriteID: e672b8291f2c18645bc4874f5c1bdbad
+      internalID: -854719885
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: play-btn_1
+      name: settings-btn_1
       rect:
         serializedVersion: 2
         x: 0
         y: 16
-        width: 80
+        width: 144
         height: 16
       alignment: 0
       pivot: {x: 0, y: 0}
@@ -171,19 +171,19 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: f14a122d0e524a040b61fb7ea7413242
-      internalID: -1929403711
+      spriteID: 48b06694f124df64094e608702fed6a5
+      internalID: -1810684653
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: play-btn_2
+      name: settings-btn_2
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 80
+        width: 144
         height: 16
       alignment: 0
       pivot: {x: 0, y: 0}
@@ -192,8 +192,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 5925c6b004ebece48994228bac6a12ad
-      internalID: 858044939
+      spriteID: db04d08e847716944b67bcb4c9e491c4
+      internalID: -1488399863
       vertices: []
       indices: 
       edges: []
@@ -209,9 +209,9 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      play-btn_0: 528248305
-      play-btn_1: -1929403711
-      play-btn_2: 858044939
+      settings-btn_0: -854719885
+      settings-btn_1: -1810684653
+      settings-btn_2: -1488399863
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

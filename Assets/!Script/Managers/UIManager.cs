@@ -69,11 +69,11 @@ public class UIManager : MonoBehaviour
   }
   public void UpdateHighScoreText(int newHighScore) => _highScoreText.text = HIGH_SCORE_PREFIX + newHighScore.ToString();
 
-  public void TogglePauseMenu()
+  public void TogglePauseMenu(bool currentlyPaused)
   {
-    if (MainManager.Instance.SceneHandler.CurrentSceneIndex != 1)
-      return;
-
-    _pausePanel.SetActive(!_pausePanel.activeSelf);
+    if (currentlyPaused)
+      _pausePanel.SetActive(false);
+    else
+      _pausePanel.SetActive(true);
   }
 }

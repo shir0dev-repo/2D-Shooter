@@ -73,6 +73,6 @@ public class PlayerInputHandler : Singleton<PlayerInputHandler>
             Time.timeScale = 1;
         }
 
-        MainManager.Instance.UIManager.TogglePauseMenu();
+        MainManager.Instance.PauseGame();
     }
 }

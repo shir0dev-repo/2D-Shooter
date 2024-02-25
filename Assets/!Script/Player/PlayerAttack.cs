@@ -34,7 +34,7 @@ public class PlayerAttack : Attack
     {
         base.HandleAttack();
 
-        //MainManager.Instance.AudioManager.PlaySoundEffect(_attackSound);
+        MainManager.Instance.AudioManager.PlaySoundEffect(_attackSound);
         Projectile projectile = Instantiate(_projectilePrefab, transform.position, Quaternion.identity).GetComponent<Projectile>();
         projectile.SetDirection(PlayerInputHandler.GetMousePosition());
 
