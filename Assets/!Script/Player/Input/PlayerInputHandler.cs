@@ -24,8 +24,6 @@ public class PlayerInputHandler : Singleton<PlayerInputHandler>
 
     private PlayerInputActionsAsset _playerActionsAsset;
 
-    private static bool _isPaused = false;
-
     protected override void Awake()
     {
         //Create new "instance" or "copy" of ActionsAsset
@@ -65,18 +63,16 @@ public class PlayerInputHandler : Singleton<PlayerInputHandler>
 
     void PauseGame(InputAction.CallbackContext ctx)
     {
-        _isPaused = !_isPaused;
-        if (_isPaused)
+        MainManager.Instance.PauseGame();
+        if (Time.timeScale < 1f)
         {
-            Cursor.visible = true;
-            Time.timeScale = 0;
+            _attackAction.Disable();
+            _missileAction.Disable();
         }
         else
         {
-            Cursor.visible = false;
-            Time.timeScale = 1;
+            _missileAction.Enable();
+            _attackAction.Enable();
         }
-
-        MainManager.Instance.PauseGame();
     }
 }

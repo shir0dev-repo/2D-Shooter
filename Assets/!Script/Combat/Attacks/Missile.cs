@@ -49,16 +49,14 @@ public class Missile : MonoBehaviour
             }
             //Move towards camera
             transform.Translate(directionToCenter * speed * Time.deltaTime);
-        }   
+        }
     }
     private void Explode()
     {
-        float explosionRadius = (_camera.orthographicSize * 2f) * Screen.width / Screen.height;
-        Collider2D[] enemyColliders = Physics2D.OverlapCircleAll(transform.position, 20f, 1 << LayerMask.NameToLayer("Enemy"));
-        
-        Debug.Log(enemyColliders.Length);
+        float explosionRadius = _camera.orthographicSize * 2f * Screen.width / Screen.height;
+        Collider2D[] enemyColliders = Physics2D.OverlapCircleAll(transform.position, explosionRadius, 1 << LayerMask.NameToLayer("Enemy"));
 
-        foreach(Collider2D enemy in enemyColliders)
+        foreach (Collider2D enemy in enemyColliders)
         {
             if (enemy.TryGetComponent(out DamageableEnemy de))
             {
@@ -69,7 +67,7 @@ public class Missile : MonoBehaviour
     }
     private void OnDrawGizmos()
     {
-        float explosionRadius = (_camera.orthographicSize * 2f) * Screen.width / Screen.height;
+        float explosionRadius = _camera.orthographicSize * 2f * Screen.width / Screen.height;
 
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(transform.position, explosionRadius);
